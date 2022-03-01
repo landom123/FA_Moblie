@@ -1,0 +1,562 @@
+// ignore_for_file: deprecated_member_use
+
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:qrscan/qrscan.dart' as scanner;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:snippet_coder_utils/FormHelper.dart';
+import 'package:snippet_coder_utils/ProgressHUD.dart';
+import 'package:snippet_coder_utils/hex_color.dart';
+import 'package:new_flutter_test/config.dart';
+import 'package:http/http.dart' as http;
+
+class TestAsset extends StatefulWidget {
+  const TestAsset({Key? key}) : super(key: key);
+
+  @override
+  _TestAssetState createState() => _TestAssetState();
+}
+
+class _TestAssetState extends State<TestAsset> {
+  GlobalKey<FormState> codeFormkey = GlobalKey<FormState>();
+  bool isAPIcallProcessAssets = false;
+  var codeController = TextEditingController();
+  var nameController = TextEditingController();
+  var branchController = TextEditingController();
+  var dateTimeController = TextEditingController();
+  var statusController = TextEditingController();
+  var assetIDController = TextEditingController();
+  var referenceController = TextEditingController();
+  String referenceSetState1 = "ชำรุดรอซ่อม";
+  String referenceSetState2 = "รอตัดชำรุด";
+  bool checkBox = false;
+  bool checkBox2 = false;
+  String? moneyController;
+  String? userID;
+  int? userBranch;
+  String? userCode;
+  int userBranchID = 0;
+  bool _visible = false;
+  bool _visibleRead = false;
+  dynamic itemOfName = [];
+  var round_id = TextEditingController();
+
+  @override
+  dynamic initState() {
+    super.initState();
+    getUser();
+  }
+
+  void getUser() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setState(() {
+      userBranch = pref.getInt("BranchID")!;
+      userCode = pref.getString("UserCode")!;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: Colors.white,
+          leading: Row(children: <Widget>[
+            const SizedBox(
+              width: 5.0,
+            ),
+            IconButton(
+              color: Colors.white,
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Color.fromRGBO(40, 59, 113, 1),
+                size: 28,
+              ),
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, '/scanner', (route) => false);
+              },
+            ),
+          ]),
+        ),
+        backgroundColor: HexColor('#283B71'),
+        body: ProgressHUD(
+          child: Form(
+            key: codeFormkey,
+            child: _scanner(context),
+          ),
+          inAsyncCall: isAPIcallProcessAssets,
+          opacity: 0,
+          key: UniqueKey(),
+        ),
+      ),
+    );
+  }
+
+  Widget _scanner(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height / 4.5,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.white, Colors.white]),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(100),
+                bottomRight: Radius.circular(100),
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.center,
+                  child: Image.asset(
+                    "assets/images/purethai.png",
+                    width: 250,
+                    height: 180,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 40),
+          const Padding(
+            padding: EdgeInsets.only(left: 20.0, right: 16.0),
+            child: Text(
+              "กดเริ่มสแกนเพื่อทำการนับทรัพย์สิน",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                  color: Colors.white),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Visibility(
+            visible: _visible,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              child: TextField(
+                readOnly: _visibleRead,
+                textAlign: TextAlign.center,
+                controller: codeController,
+                style: const TextStyle(color: Colors.white, fontSize: 20),
+                decoration: const InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white)),
+                    labelText: "Code",
+                    labelStyle: TextStyle(color: Colors.white),
+                    prefixIcon: Icon(
+                      Icons.qr_code_rounded,
+                      color: Colors.white,
+                    )),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Visibility(
+            visible: _visible,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              child: TextField(
+                readOnly: true,
+                textAlign: TextAlign.center,
+                controller: nameController,
+                style: const TextStyle(color: Colors.white, fontSize: 20),
+                decoration: const InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white)),
+                    labelText: "ชื่อ",
+                    labelStyle: TextStyle(color: Colors.white),
+                    prefixIcon: Icon(
+                      Icons.subtitles_rounded,
+                      color: Colors.white,
+                    )),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Visibility(
+            visible: _visible,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120,
+                    child: TextField(
+                      readOnly: true,
+                      textAlign: TextAlign.center,
+                      controller: branchController,
+                      style: const TextStyle(color: Colors.white, fontSize: 18),
+                      decoration: const InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "สาขา",
+                          labelStyle: TextStyle(color: Colors.white),
+                          prefixIcon: Icon(
+                            Icons.home_filled,
+                            color: Colors.white,
+                          )),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 240,
+                    child: TextField(
+                      readOnly: true,
+                      textAlign: TextAlign.center,
+                      controller: dateTimeController,
+                      style: const TextStyle(color: Colors.white, fontSize: 18),
+                      decoration: const InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "วันเวลา",
+                          labelStyle: TextStyle(color: Colors.white),
+                          prefixIcon: Icon(
+                            Icons.date_range,
+                            color: Colors.white,
+                          )),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: 180,
+                  child: Visibility(
+                    visible: _visible,
+                    child: Theme(
+                      data: Theme.of(context)
+                          .copyWith(unselectedWidgetColor: Colors.white),
+                      child: Row(
+                        children: [
+                          Checkbox(
+                            value: checkBox,
+                            splashRadius: 30,
+                            activeColor: Colors.orangeAccent,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            onChanged: (value) {
+                              setState(() {
+                                checkBox = value!;
+                                if (checkBox == false) {
+                                  referenceController.clear();
+                                  update();
+                                } else {
+                                  checkBox2 = false;
+                                  referenceController.text =
+                                      referenceSetState1.toString();
+                                  update();
+                                }
+                              });
+                            },
+                          ),
+                          const Text('ชำรุดรอซ่อม',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                SizedBox(
+                  width: 180,
+                  child: Visibility(
+                    visible: _visible,
+                    child: Theme(
+                      data: Theme.of(context)
+                          .copyWith(unselectedWidgetColor: Colors.white),
+                      child: Row(
+                        children: [
+                          Checkbox(
+                            value: checkBox2,
+                            splashRadius: 30,
+                            activeColor: Colors.orangeAccent,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            onChanged: (value) {
+                              setState(() {
+                                checkBox2 = value!;
+                                if (checkBox2 == false) {
+                                  referenceController.clear();
+                                  update();
+                                } else {
+                                  checkBox = false;
+                                  referenceController.text =
+                                      referenceSetState2.toString();
+                                  update();
+                                }
+                              });
+                            },
+                          ),
+                          const Text('รอตัดชำรุด',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 64, right: 64),
+            child: Container(
+              alignment: Alignment.topCenter,
+              padding: const EdgeInsets.only(top: 5, right: 15.0, left: 15.0),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: ListView(
+                  primary: false,
+                  children: <Widget>[
+                    const SizedBox(height: 10),
+                    Card(
+                      elevation: 4.0,
+                      child: InkWell(
+                        onTap: () {
+                          startScan();
+                        },
+                        splashColor: const Color.fromRGBO(45, 69, 135, 1),
+                        child: Container(
+                          padding:
+                              const EdgeInsets.only(top: 16.0, bottom: 16.0),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(22.0)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              const Padding(
+                                padding:
+                                    EdgeInsets.only(left: 35.0, right: 20.0),
+                                child: Icon(
+                                  Icons.camera_alt_rounded,
+                                  color: Color.fromRGBO(40, 59, 113, 1),
+                                  size: 40.0,
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Column(
+                                      children: const <Widget>[
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            "เริ่มสแกน",
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(
+                                              fontSize: 25.0,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color.fromRGBO(
+                                                  40, 59, 113, 1),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  //Scan
+  Future<void> startScan() async {
+    try {
+      String? cameraScanResult = await scanner.scan();
+      setState(() {
+        codeController.text = cameraScanResult!;
+      });
+      // String? cameraScanResult = await FlutterBarcodeScanner.scanBarcode(
+      //   '#ffffff',
+      //   'Cancel',
+      //   true,
+      //   ScanMode.QR,
+      // );
+      // setState(() {
+      //   codeController.text = cameraScanResult;
+      // });
+
+      if (codeController.text.isNotEmpty) {
+        Map<String, String> requestHeaders = {
+          'Content-Type': 'application/json; charset=utf-8',
+        };
+        var client = http.Client();
+        var url = Uri.http(Config.apiURL, Config.assetsAPI);
+
+        var response = await client.post(
+          url,
+          headers: requestHeaders,
+          body: jsonEncode({"Code": codeController.text}),
+        );
+        if (response.statusCode == 200) {
+          dynamic itemsResponse = jsonDecode(response.body);
+          SharedPreferences pref = await SharedPreferences.getInstance();
+          SharedPreferences roundid = await SharedPreferences.getInstance();
+          setState(() {
+            nameController.text = itemsResponse['data'][0]['Name'];
+            dateTimeController.text = itemsResponse['date'].toString();
+            branchController.text =
+                itemsResponse['data'][0]['BranchID'].toString();
+            statusController.text = itemsResponse['status'].toString();
+            assetIDController.text =
+                itemsResponse['data'][0]['AssetID'].toString();
+            userID = pref.getString("UserID")!;
+            userBranchID = pref.getInt("BranchID")!;
+            round_id.text = roundid.getString("RoundID")!;
+            referenceController.text = "";
+            if (itemsResponse['data'][0]['Price'] == null) {
+              itemsResponse['data'][0]['Price'] = 0;
+            }
+            moneyController = itemsResponse['data'][0]['Price'].toString();
+          });
+          if (codeController.text.isNotEmpty &&
+              nameController.text.isNotEmpty &&
+              branchController.text.isNotEmpty &&
+              dateTimeController.text.isNotEmpty &&
+              statusController.text.isNotEmpty &&
+              assetIDController.text.isNotEmpty &&
+              moneyController.toString().isNotEmpty &&
+              userID.toString().isNotEmpty) {
+            var client = http.Client();
+            var url = Uri.http(Config.apiURL, Config.addAssetsAPI);
+            var response = await client.post(
+              url,
+              headers: requestHeaders,
+              body: jsonEncode({
+                "AssetID": assetIDController.text,
+                "Code": codeController.text,
+                "Name": nameController.text,
+                "BranchID": branchController.text,
+                "Date": dateTimeController.text,
+                "Status": statusController.text,
+                "UserID": userID,
+                "UserBranch": userBranchID.toString(),
+                "RoundID": round_id.text,
+                "Reference": referenceController.text,
+                "Price": moneyController
+              }),
+            );
+            if (response.statusCode == 200) {
+              dynamic itemsResponse = jsonDecode(response.body);
+              FormHelper.showSimpleAlertDialog(
+                  context, Config.appName, itemsResponse['message'], "OK", () {
+                Navigator.pop(context);
+              });
+              setState(() {
+                _visible = true;
+                _visibleRead = false;
+              });
+            } else {
+              _visible = false;
+              _visibleRead = false;
+              dynamic itemsResponse = jsonDecode(response.body);
+              FormHelper.showSimpleAlertDialog(
+                  context, Config.appName, itemsResponse['message'], "ยอมรับ",
+                  () {
+                Navigator.pop(context);
+                setState(() {
+                  assetIDController.clear();
+                  codeController.clear();
+                  nameController.clear();
+                  branchController.clear();
+                  dateTimeController.clear();
+                  statusController.clear();
+                });
+              });
+            }
+          }
+        } else {
+          FormHelper.showSimpleAlertDialog(
+              context, Config.appName, "ไม่พบ Code นี้ในระบบ", "ยอมรับ", () {
+            Navigator.pop(context);
+          });
+        }
+      } else {
+        FormHelper.showSimpleAlertDialog(
+            context, Config.appName, "กรุณาใส่ข้อมูล", "ยอมรับ", () {
+          Navigator.pop(context);
+        });
+      }
+    } on PlatformException {
+      codeController.text = "Failed to get platfrom version.";
+    }
+  }
+
+  Future<void> update() async {
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json;charset=utf-8',
+    };
+    var client = http.Client();
+    var url = Uri.http(Config.apiURL, Config.updateReference);
+    var response = await client.put(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode({
+        "Code": codeController.text,
+        "RoundID": round_id.text,
+        "Reference": referenceController.text,
+        "UserID": userID,
+      }),
+    );
+    // print(response.body);
+    if (response.statusCode == 200) {
+      _visible = false;
+      _visibleRead = false;
+      dynamic itemsResponse = jsonDecode(response.body);
+      FormHelper.showSimpleAlertDialog(
+          context, Config.appName, itemsResponse['message'], "ยอมรับ", () {
+        Navigator.pop(context);
+        setState(() {
+          _visible = true;
+          _visibleRead = false;
+        });
+      });
+    }
+  }
+}

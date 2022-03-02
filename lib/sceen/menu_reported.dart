@@ -245,7 +245,6 @@ class _ViewDetailsState extends State<ViewDetails> {
     var roundID = index['RoundID'];
     var branchuserID = index['UserBranch'];
     var time = index['Date'];
-    //var price = oCcy.format(index['Price']);
     DateTime date = DateTime.parse(time);
     final DateFormat formatter = DateFormat('yyyy/MM/dd');
     final String assetDate = formatter.format(date);
@@ -352,7 +351,6 @@ class _ViewDetailsState extends State<ViewDetails> {
     var branchuserID = index['UserBranch'];
     var time = index['Date'];
     var roundID = index['RoundID'];
-    //var price = oCcy.format(index['Price']);
     DateTime date = DateTime.parse(time);
     final DateFormat formatter = DateFormat('yyyy/MM/dd');
     final String assetDate = formatter.format(date);
@@ -455,7 +453,6 @@ class _ViewDetailsState extends State<ViewDetails> {
     var titleName = index['Name'];
     var codeAssets = index['Code'];
     var brachID = index['BranchID'];
-    var price = oCcy.format(index['Price']);
     // var userID = "null";
     // var branchuserID = "null";
     return Padding(
@@ -473,7 +470,6 @@ class _ViewDetailsState extends State<ViewDetails> {
                             titleName: index['Name'],
                             codeAssets: index['Code'],
                             brachID: index['BranchID'],
-                            price: index['Price'].toString(),
                             assetID: index['AssetID'],
                             roundID: widget.period_round.toString(),
                           )));

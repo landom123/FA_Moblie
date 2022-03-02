@@ -4,7 +4,7 @@ class Config {
   static const String appName = "แจ้งเตือน";
   // static const String appAssets = "Assets";
   // static const String apiURL = "vpnptec.dyndns.org:32001"; //Ipconfig
-  static const String apiURL = "192.168.1.112:8080";
+  static const String apiURL = "49.0.64.71:32001";
   static const String loginAPI = "/api/login"; //login
   static const String profileAPI = "/api/users/:body"; //profile
   static const String assetsAPI = "/api/getAsset"; //CheckCode

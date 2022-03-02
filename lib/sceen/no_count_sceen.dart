@@ -12,7 +12,6 @@ import 'menu_reported.dart';
 
 class NoCountedSceen extends StatefulWidget {
   final String assetID;
-  final String price;
   final oCcy = NumberFormat("#,##0.00", "th");
   final String titleName;
   final String codeAssets;
@@ -24,7 +23,6 @@ class NoCountedSceen extends StatefulWidget {
     required this.codeAssets,
     required this.brachID,
     required this.assetID,
-    required this.price,
     required this.roundID,
   }) : super(key: key);
   @override
@@ -271,7 +269,6 @@ class _NoCountedSceenState extends State<NoCountedSceen> {
               "UserBranch": pref.getInt("BranchID")!,
               "RoundID": roundid.getString("RoundID")!,
               "Reference": referenceController.text,
-              "Price": widget.price.toString(),
             }),
           );
           if (response.statusCode == 200) {

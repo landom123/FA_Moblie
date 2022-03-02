@@ -412,7 +412,7 @@ class _TestAssetState extends State<TestAsset> {
       setState(() {
         codeController.text = cameraScanResult!;
       });
-      // String? cameraScanResult = await FlutterBarcodeScanner.scanBarcode(
+      // String cameraScanResult = await FlutterBarcodeScanner.scanBarcode(
       //   '#ffffff',
       //   'Cancel',
       //   true,
@@ -450,10 +450,6 @@ class _TestAssetState extends State<TestAsset> {
             userBranchID = pref.getInt("BranchID")!;
             round_id.text = roundid.getString("RoundID")!;
             referenceController.text = "";
-            if (itemsResponse['data'][0]['Price'] == null) {
-              itemsResponse['data'][0]['Price'] = 0;
-            }
-            moneyController = itemsResponse['data'][0]['Price'].toString();
           });
           if (codeController.text.isNotEmpty &&
               nameController.text.isNotEmpty &&
@@ -461,7 +457,6 @@ class _TestAssetState extends State<TestAsset> {
               dateTimeController.text.isNotEmpty &&
               statusController.text.isNotEmpty &&
               assetIDController.text.isNotEmpty &&
-              moneyController.toString().isNotEmpty &&
               userID.toString().isNotEmpty) {
             var client = http.Client();
             var url = Uri.http(Config.apiURL, Config.addAssetsAPI);
@@ -479,7 +474,6 @@ class _TestAssetState extends State<TestAsset> {
                 "UserBranch": userBranchID.toString(),
                 "RoundID": round_id.text,
                 "Reference": referenceController.text,
-                "Price": moneyController
               }),
             );
             if (response.statusCode == 200) {

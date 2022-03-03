@@ -277,7 +277,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     SizedBox(
-                      width: 330,
+                      width: 280,
                       child: Text('$titleName',
                           style: const TextStyle(
                               fontSize: 16,
@@ -383,7 +383,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     SizedBox(
-                      width: 330,
+                      width: 280,
                       child: Text('$titleName',
                           style: const TextStyle(
                               fontSize: 16,
@@ -481,7 +481,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     SizedBox(
-                      width: 330,
+                      width: 280,
                       child: Text('$titleName',
                           style: const TextStyle(
                               fontSize: 16,

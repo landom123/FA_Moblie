@@ -45,8 +45,13 @@ class _DetailsReportedState extends State<DetailsReported> {
   String referenceSetState3 = '';
   bool _visible = false;
   bool _visible2 = false;
+  var titleName = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      titleName.text = widget.titleName;
+    });
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 60,
@@ -82,7 +87,7 @@ class _DetailsReportedState extends State<DetailsReported> {
         children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height / 4.5,
+            height: MediaQuery.of(context).size.height / 3.8,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -94,7 +99,7 @@ class _DetailsReportedState extends State<DetailsReported> {
               ),
             ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Align(
                   alignment: Alignment.center,
@@ -116,13 +121,21 @@ class _DetailsReportedState extends State<DetailsReported> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  widget.titleName,
+                TextField(
+                  readOnly: true,
+                  controller: titleName,
                   style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      //fontStyle: FontStyle.italic,
-                      fontSize: 30,
-                      color: Colors.white),
+                    color: Colors.white,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                  ),
                 ),
                 const SizedBox(
                   height: 10,

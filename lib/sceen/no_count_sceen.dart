@@ -36,6 +36,7 @@ class _NoCountedSceenState extends State<NoCountedSceen> {
   String referenceSetState2 = 'QR Code ไม่สมบูรณ์';
   final now = DateTime.now();
   final int status = 1;
+  var titleName = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,13 +68,16 @@ class _NoCountedSceenState extends State<NoCountedSceen> {
   }
 
   Widget assetsReported() {
+    setState(() {
+      titleName.text = widget.titleName;
+    });
     return SingleChildScrollView(
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 4.5,
+              height: MediaQuery.of(context).size.height / 3.8,
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.topCenter,
@@ -85,7 +89,7 @@ class _NoCountedSceenState extends State<NoCountedSceen> {
                 ),
               ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Align(
                     alignment: Alignment.center,
@@ -107,13 +111,21 @@ class _NoCountedSceenState extends State<NoCountedSceen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.titleName,
+                  TextField(
+                    readOnly: true,
+                    controller: titleName,
                     style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        //fontStyle: FontStyle.italic,
-                        fontSize: 30,
-                        color: Colors.white),
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                    ),
                   ),
                   const SizedBox(
                     height: 10,
@@ -315,8 +327,9 @@ class _NoCountedSceenState extends State<NoCountedSceen> {
         }
       } else {
         setState(() {
+          var items = jsonDecode(response.body)['data'];
           FormHelper.showSimpleAlertDialog(context, Config.appName,
-              "ไม่สามารถบันทึกข้อมูลได้ กรุณาลองใหม่", "ยอมรับ", () {
+              "ไม่สามารถบันทึกข้อมูลได้เนื่องจาก $items", "ยอมรับ", () {
             Navigator.pop(context);
           });
         });

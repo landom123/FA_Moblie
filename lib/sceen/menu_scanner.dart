@@ -426,7 +426,7 @@ class _TestAssetState extends State<TestAsset> {
         codeController.text = cameraScanResult!;
       });
       // String cameraScanResult = await FlutterBarcodeScanner.scanBarcode(
-      //   '#ffffff',
+      //   '#004297',
       //   'Cancel',
       //   true,
       //   ScanMode.QR,

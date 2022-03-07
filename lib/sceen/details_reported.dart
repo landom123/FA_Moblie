@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 import 'package:http/http.dart' as http;
-
 import '../config.dart';
 
 class DetailsReported extends StatefulWidget {

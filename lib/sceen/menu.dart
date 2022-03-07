@@ -2,12 +2,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:new_flutter_test/sceen/check_code.dart';
 import 'package:new_flutter_test/service/shared_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 import 'package:http/http.dart' as http;
+import 'package:qrscan/qrscan.dart' as scanner;
 
 import '../config.dart';
 
@@ -27,7 +29,7 @@ class _ScannerState extends State<Scanner> {
   bool isAPIcallProcess = false;
   bool hidePassword = true;
   GlobalKey<FormState> globaAssetsFormkey = GlobalKey<FormState>();
-  String resultScan = "Not yet Scanned";
+  String? resultScan;
 
   @override
   dynamic initState() {
@@ -124,7 +126,7 @@ class _ScannerState extends State<Scanner> {
         children: [
           Container(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height / 4.5,
+            height: MediaQuery.of(context).size.height / 3.8,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -136,7 +138,7 @@ class _ScannerState extends State<Scanner> {
               ),
             ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Align(
                   alignment: Alignment.center,
@@ -184,28 +186,88 @@ class _ScannerState extends State<Scanner> {
             ),
           ),
           //
-          Padding(
-            padding: const EdgeInsets.only(left: 8, right: 8),
-            child: Container(
-              alignment: Alignment.topCenter,
-              padding: const EdgeInsets.only(top: 5, right: 10.0, left: 20.0),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                child: ListView(
-                  primary: false,
-                  children: <Widget>[
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Visibility(
-                      visible: _isButtonDisabled,
-                      child: Card(
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8, right: 8),
+              child: Container(
+                alignment: Alignment.topCenter,
+                padding: const EdgeInsets.only(top: 5, right: 10.0, left: 20.0),
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: ListView(
+                    primary: false,
+                    children: <Widget>[
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Visibility(
+                        visible: _isButtonDisabled,
+                        child: Card(
+                          elevation: 4.0,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushNamedAndRemoveUntil(context,
+                                  '/scanner/test_asset', (route) => false);
+                            },
+                            splashColor: const Color.fromRGBO(40, 59, 113, 1),
+                            child: Container(
+                              padding: const EdgeInsets.only(
+                                  top: 15.0, bottom: 15.0, right: 15.0),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(22.0)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  const Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 10.0, right: 20.0),
+                                    child: Icon(
+                                      Icons.qr_code_2_rounded,
+                                      color: Color.fromRGBO(45, 69, 135, 1),
+                                      size: 40.0,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Column(
+                                          children: const <Widget>[
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                "สแกน Qr code",
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  fontSize: 25.0,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color.fromRGBO(
+                                                      40, 59, 113, 1),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Card(
                         elevation: 4.0,
                         child: InkWell(
                           onTap: () {
-                            Navigator.pushNamedAndRemoveUntil(context,
-                                '/scanner/test_asset', (route) => false);
+                            checkQR();
                           },
                           splashColor: const Color.fromRGBO(40, 59, 113, 1),
                           child: Container(
@@ -221,8 +283,8 @@ class _ScannerState extends State<Scanner> {
                                   padding:
                                       EdgeInsets.only(left: 10.0, right: 20.0),
                                   child: Icon(
-                                    Icons.qr_code_2_rounded,
-                                    color: Color.fromRGBO(45, 69, 135, 1),
+                                    Icons.check_circle,
+                                    color: Color.fromRGBO(40, 59, 113, 1),
                                     size: 40.0,
                                   ),
                                 ),
@@ -236,7 +298,7 @@ class _ScannerState extends State<Scanner> {
                                           Align(
                                             alignment: Alignment.centerLeft,
                                             child: Text(
-                                              "สแกน Qr code",
+                                              "ตรวจสอบ Qr Code",
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontSize: 25.0,
@@ -256,68 +318,69 @@ class _ScannerState extends State<Scanner> {
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Card(
-                      elevation: 4.0,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pushNamedAndRemoveUntil(
-                              context,
-                              '/scanner/viewDetails/periodRound',
-                              (route) => false);
-                        },
-                        splashColor: const Color.fromRGBO(40, 59, 113, 1),
-                        child: Container(
-                          padding: const EdgeInsets.only(
-                              top: 15.0, bottom: 15.0, right: 15.0),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(22.0)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              const Padding(
-                                padding:
-                                    EdgeInsets.only(left: 10.0, right: 20.0),
-                                child: Icon(
-                                  Icons.article,
-                                  color: Color.fromRGBO(40, 59, 113, 1),
-                                  size: 40.0,
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Card(
+                        elevation: 4.0,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                '/scanner/viewDetails/periodRound',
+                                (route) => false);
+                          },
+                          splashColor: const Color.fromRGBO(40, 59, 113, 1),
+                          child: Container(
+                            padding: const EdgeInsets.only(
+                                top: 15.0, bottom: 15.0, right: 15.0),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(22.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                const Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 10.0, right: 20.0),
+                                  child: Icon(
+                                    Icons.article,
+                                    color: Color.fromRGBO(40, 59, 113, 1),
+                                    size: 40.0,
+                                  ),
                                 ),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Column(
-                                      children: const <Widget>[
-                                        Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            "รายการนับทรัพย์สิน",
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                              fontSize: 25.0,
-                                              fontWeight: FontWeight.bold,
-                                              color: Color.fromRGBO(
-                                                  40, 59, 113, 1),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Column(
+                                        children: const <Widget>[
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              "รายการทรัพย์สิน",
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                fontSize: 25.0,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color.fromRGBO(
+                                                    40, 59, 113, 1),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -326,5 +389,50 @@ class _ScannerState extends State<Scanner> {
         ],
       ),
     );
+  }
+
+  Future<void> checkQR() async {
+    String? cameraScanResult = await scanner.scan();
+    setState(() {
+      resultScan = cameraScanResult!;
+    });
+    if (resultScan.toString().isNotEmpty) {
+      Map<String, String> requestHeaders = {
+        'Content-Type': 'application/json; charset=utf-8',
+      };
+      var client = http.Client();
+      var url = Uri.http(Config.apiURL, Config.assetsAPI);
+
+      var response = await client.post(
+        url,
+        headers: requestHeaders,
+        body: jsonEncode({"Code": resultScan}),
+      );
+      if (response.statusCode == 200) {
+        setState(() {
+          dynamic itemsResponse = jsonDecode(response.body)['data'][0];
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => CheckCode(
+                titleName: itemsResponse['Name'],
+                codeAssets: itemsResponse['Code'],
+                brachID: itemsResponse['BranchID'],
+              ),
+            ),
+          );
+        });
+      } else {
+        FormHelper.showSimpleAlertDialog(
+            context, Config.appName, "ไม่พบ Code นี้ในระบบ", "OK", () {
+          Navigator.pop(context);
+        });
+      }
+    } else {
+      FormHelper.showSimpleAlertDialog(
+          context, Config.appName, 'กรุณาสแกน Code บ้างอย่าง', "OK", () {
+        Navigator.pop(context);
+      });
+    }
   }
 }

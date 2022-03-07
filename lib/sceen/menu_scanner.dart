@@ -101,10 +101,11 @@ class _TestAssetState extends State<TestAsset> {
   Widget _scanner(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height / 4.5,
+            height: MediaQuery.of(context).size.height / 3.8,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -116,7 +117,7 @@ class _TestAssetState extends State<TestAsset> {
               ),
             ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Align(
                   alignment: Alignment.center,
@@ -131,271 +132,283 @@ class _TestAssetState extends State<TestAsset> {
             ),
           ),
           const SizedBox(height: 40),
-          const Padding(
-            padding: EdgeInsets.only(left: 20.0, right: 16.0),
-            child: Text(
-              "กดเริ่มสแกนเพื่อทำการนับทรัพย์สิน",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                  color: Colors.white),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Visibility(
-            visible: _visible,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16),
-              child: TextField(
-                readOnly: _visibleRead,
-                textAlign: TextAlign.center,
-                controller: codeController,
-                style: const TextStyle(color: Colors.white, fontSize: 20),
-                decoration: const InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white)),
-                    labelText: "Code",
-                    labelStyle: TextStyle(color: Colors.white),
-                    prefixIcon: Icon(
-                      Icons.qr_code_rounded,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const <Widget>[
+              Padding(
+                padding: EdgeInsets.only(left: 35, right: 16),
+                child: Text(
+                  'กดที่ เริ่มสแกน',
+                  style: TextStyle(
                       color: Colors.white,
-                    )),
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-          ),
-          const SizedBox(height: 10),
-          Visibility(
-            visible: _visible,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16),
-              child: TextField(
-                readOnly: true,
-                textAlign: TextAlign.center,
-                controller: nameController,
-                style: const TextStyle(color: Colors.white, fontSize: 20),
-                decoration: const InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white)),
-                    labelText: "ชื่อ",
-                    labelStyle: TextStyle(color: Colors.white),
-                    prefixIcon: Icon(
-                      Icons.subtitles_rounded,
+              Padding(
+                padding: EdgeInsets.only(left: 35, right: 16),
+                child: Text(
+                  'เพื่อทำการนับทรัพย์สิน',
+                  style: TextStyle(
                       color: Colors.white,
-                    )),
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
+            ],
           ),
-          const SizedBox(
-            height: 15,
-          ),
-          Visibility(
-            visible: _visible,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  SizedBox(
-                    width: 120,
-                    child: TextField(
-                      readOnly: true,
-                      textAlign: TextAlign.center,
-                      controller: branchController,
-                      style: const TextStyle(color: Colors.white, fontSize: 18),
-                      decoration: const InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white)),
-                          labelText: "สาขา",
-                          labelStyle: TextStyle(color: Colors.white),
-                          prefixIcon: Icon(
-                            Icons.home_filled,
-                            color: Colors.white,
-                          )),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 240,
-                    child: TextField(
-                      readOnly: true,
-                      textAlign: TextAlign.center,
-                      controller: dateTimeController,
-                      style: const TextStyle(color: Colors.white, fontSize: 18),
-                      decoration: const InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white)),
-                          labelText: "วันเวลา",
-                          labelStyle: TextStyle(color: Colors.white),
-                          prefixIcon: Icon(
-                            Icons.date_range,
-                            color: Colors.white,
-                          )),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          const SizedBox(height: 40),
+          Center(
+            child: Column(
               children: [
-                SizedBox(
-                  width: 180,
-                  child: Visibility(
-                    visible: _visible,
-                    child: Theme(
-                      data: Theme.of(context)
-                          .copyWith(unselectedWidgetColor: Colors.white),
-                      child: Row(
-                        children: [
-                          Checkbox(
-                            value: checkBox,
-                            splashRadius: 30,
-                            activeColor: Colors.orangeAccent,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            onChanged: (value) {
-                              setState(() {
-                                checkBox = value!;
-                                if (checkBox == false) {
-                                  referenceController.clear();
-                                  update();
-                                } else {
-                                  checkBox2 = false;
-                                  referenceController.text =
-                                      referenceSetState1.toString();
-                                  update();
-                                }
-                              });
-                            },
-                          ),
-                          const Text('ชำรุดรอซ่อม',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 18)),
-                        ],
-                      ),
+                Visibility(
+                  visible: _visible,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 25, right: 25),
+                    child: TextField(
+                      readOnly: true,
+                      textAlign: TextAlign.center,
+                      controller: codeController,
+                      style: const TextStyle(color: Colors.white, fontSize: 20),
+                      decoration: const InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "Code",
+                          labelStyle: TextStyle(color: Colors.white),
+                          prefixIcon: Icon(
+                            Icons.subtitles_rounded,
+                            color: Colors.white,
+                          )),
                     ),
                   ),
                 ),
-                const SizedBox(width: 10),
-                SizedBox(
-                  width: 180,
-                  child: Visibility(
-                    visible: _visible,
-                    child: Theme(
-                      data: Theme.of(context)
-                          .copyWith(unselectedWidgetColor: Colors.white),
-                      child: Row(
-                        children: [
-                          Checkbox(
-                            value: checkBox2,
-                            splashRadius: 30,
-                            activeColor: Colors.orangeAccent,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            onChanged: (value) {
-                              setState(() {
-                                checkBox2 = value!;
-                                if (checkBox2 == false) {
-                                  referenceController.clear();
-                                  update();
-                                } else {
-                                  checkBox = false;
-                                  referenceController.text =
-                                      referenceSetState2.toString();
-                                  update();
-                                }
-                              });
-                            },
-                          ),
-                          const Text('รอตัดชำรุด',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 18)),
-                        ],
-                      ),
+                const SizedBox(height: 10),
+                Visibility(
+                  visible: _visible,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 25, right: 25),
+                    child: TextField(
+                      readOnly: true,
+                      textAlign: TextAlign.center,
+                      controller: nameController,
+                      style: const TextStyle(color: Colors.white, fontSize: 20),
+                      decoration: const InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          labelText: "ชื่อ",
+                          labelStyle: TextStyle(color: Colors.white),
+                          prefixIcon: Icon(
+                            Icons.subtitles_rounded,
+                            color: Colors.white,
+                          )),
                     ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Visibility(
+                  visible: _visible,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 25, right: 25),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        SizedBox(
+                          width: 110,
+                          child: TextField(
+                            readOnly: true,
+                            textAlign: TextAlign.center,
+                            controller: branchController,
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 20),
+                            decoration: const InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white)),
+                                labelText: "สาขา",
+                                labelStyle: TextStyle(color: Colors.white),
+                                prefixIcon: Icon(
+                                  Icons.subtitles_rounded,
+                                  color: Colors.white,
+                                )),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        SizedBox(
+                          width: 190,
+                          child: TextField(
+                            readOnly: true,
+                            textAlign: TextAlign.center,
+                            controller: dateTimeController,
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 20),
+                            decoration: const InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            Color.fromRGBO(255, 255, 255, 1))),
+                                labelText: "วันที่และเวลา",
+                                labelStyle: TextStyle(color: Colors.white),
+                                prefixIcon: Icon(
+                                  Icons.subtitles_rounded,
+                                  color: Colors.white,
+                                )),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Visibility(
+                        visible: _visible,
+                        child: Theme(
+                          data: Theme.of(context)
+                              .copyWith(unselectedWidgetColor: Colors.white),
+                          child: Row(
+                            children: [
+                              Checkbox(
+                                value: checkBox,
+                                splashRadius: 30,
+                                activeColor: Colors.orangeAccent,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                onChanged: (value) {
+                                  setState(() {
+                                    checkBox = value!;
+                                    if (checkBox == false) {
+                                      referenceController.clear();
+                                      update();
+                                    } else {
+                                      checkBox2 = false;
+                                      referenceController.text =
+                                          referenceSetState1.toString();
+                                      update();
+                                    }
+                                  });
+                                },
+                              ),
+                              const Text('ชำรุดรอซ่อม',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18)),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Visibility(
+                        visible: _visible,
+                        child: Theme(
+                          data: Theme.of(context)
+                              .copyWith(unselectedWidgetColor: Colors.white),
+                          child: Row(
+                            children: [
+                              Checkbox(
+                                value: checkBox2,
+                                splashRadius: 30,
+                                activeColor: Colors.orangeAccent,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                onChanged: (value) {
+                                  setState(() {
+                                    checkBox2 = value!;
+                                    if (checkBox2 == false) {
+                                      referenceController.clear();
+                                      update();
+                                    } else {
+                                      checkBox = false;
+                                      referenceController.text =
+                                          referenceSetState2.toString();
+                                      update();
+                                    }
+                                  });
+                                },
+                              ),
+                              const Text('รอตัดชำรุด',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 64, right: 64),
-            child: Container(
-              alignment: Alignment.topCenter,
-              padding: const EdgeInsets.only(top: 5, right: 15.0, left: 15.0),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                child: ListView(
-                  primary: false,
-                  children: <Widget>[
-                    const SizedBox(height: 10),
-                    Card(
-                      elevation: 4.0,
-                      child: InkWell(
-                        onTap: () {
-                          startScan();
-                        },
-                        splashColor: const Color.fromRGBO(45, 69, 135, 1),
-                        child: Container(
-                          padding:
-                              const EdgeInsets.only(top: 16.0, bottom: 16.0),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(22.0)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              const Padding(
-                                padding:
-                                    EdgeInsets.only(left: 35.0, right: 20.0),
-                                child: Icon(
-                                  Icons.camera_alt_rounded,
-                                  color: Color.fromRGBO(40, 59, 113, 1),
-                                  size: 40.0,
-                                ),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Column(
-                                      children: const <Widget>[
-                                        Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            "เริ่มสแกน",
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                              fontSize: 25.0,
-                                              fontWeight: FontWeight.bold,
-                                              color: Color.fromRGBO(
-                                                  40, 59, 113, 1),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+          Center(
+            child: SizedBox(
+              width: 330,
+              child: Container(
+                alignment: Alignment.topCenter,
+                padding:
+                    const EdgeInsets.only(top: 10, right: 15.0, left: 15.0),
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: ListView(
+                    primary: false,
+                    children: <Widget>[
+                      const SizedBox(height: 10),
+                      Card(
+                        elevation: 4.0,
+                        child: InkWell(
+                          onTap: () {
+                            startScan();
+                          },
+                          splashColor: const Color.fromRGBO(45, 69, 135, 1),
+                          child: Container(
+                            padding:
+                                const EdgeInsets.only(top: 16.0, bottom: 16.0),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(22.0)),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 20.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const <Widget>[
+                                  Icon(
+                                    Icons.camera,
+                                    color: Color.fromRGBO(40, 59, 113, 1),
+                                    size: 35.0,
+                                  ),
+                                  SizedBox(width: 20),
+                                  Text(
+                                    "เริ่มสแกน",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontSize: 28.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromRGBO(40, 59, 113, 1),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -413,7 +426,7 @@ class _TestAssetState extends State<TestAsset> {
         codeController.text = cameraScanResult!;
       });
       // String cameraScanResult = await FlutterBarcodeScanner.scanBarcode(
-      //   '#ffffff',
+      //   '#004297',
       //   'Cancel',
       //   true,
       //   ScanMode.QR,

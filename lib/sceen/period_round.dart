@@ -122,7 +122,7 @@ class _PeriodRoundState extends State<PeriodRound> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     SizedBox(
-                      width: 330,
+                      width: 280,
                       child: Text('รอบที่ทำการบันทึก: $period_round',
                           style: const TextStyle(
                               fontSize: 18,

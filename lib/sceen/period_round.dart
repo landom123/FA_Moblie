@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:new_flutter_test/sceen/menu.dart';
 
 import '../config.dart';
 import 'package:http/http.dart' as http;
@@ -8,13 +9,18 @@ import 'package:http/http.dart' as http;
 import 'menu_reported.dart';
 
 class PeriodRound extends StatefulWidget {
-  const PeriodRound({Key? key}) : super(key: key);
+  final int branchPermission;
+  const PeriodRound({
+    Key? key,
+    required this.branchPermission,
+  }) : super(key: key);
 
   @override
   _PeriodRoundState createState() => _PeriodRoundState();
 }
 
 class _PeriodRoundState extends State<PeriodRound> {
+  final now = DateTime.now();
   @override
   List<dynamic> period_round = [];
   @override
@@ -49,23 +55,32 @@ class _PeriodRoundState extends State<PeriodRound> {
           'Periods',
           style: TextStyle(color: Colors.white),
         ),
-        leading: Row(children: <Widget>[
-          const SizedBox(
-            width: 5.0,
-          ),
-          IconButton(
-            color: Colors.white,
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-              size: 28,
+        leading: Row(
+          children: <Widget>[
+            const SizedBox(
+              width: 5.0,
             ),
-            onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, '/scanner', (route) => false);
-            },
-          ),
-        ]),
+            IconButton(
+              color: Colors.white,
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+                size: 28,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => Scanner(
+                      brachID: widget.branchPermission,
+                      dateTimeNow: now.toString(),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
         centerTitle: true,
         elevation: 0,
         backgroundColor: const Color.fromRGBO(40, 59, 113, 1),
@@ -110,6 +125,7 @@ class _PeriodRoundState extends State<PeriodRound> {
                     period_round: period_round,
                     beginDate: period_dateBegin,
                     endDate: period_dateEnd,
+                    branchPermission: widget.branchPermission,
                   ),
                 ),
               );

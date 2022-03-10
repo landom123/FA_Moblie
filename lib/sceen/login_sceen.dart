@@ -195,7 +195,7 @@ class _LohinSceenState extends State<LohinSceen> {
                       });
                       if (response) {
                         Navigator.pushNamedAndRemoveUntil(
-                            context, '/scanner', (route) => false);
+                            context, '/permission_branch', (route) => false);
                       } else {
                         FormHelper.showSimpleAlertDialog(
                             context,

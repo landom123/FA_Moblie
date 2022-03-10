@@ -1,10 +1,9 @@
 // ignore_for_file: file_names, unnecessary_new, unused_field, non_constant_identifier_names, unused_import
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:new_flutter_test/sceen/check_code.dart';
-import 'package:new_flutter_test/sceen/menu_scanner.dart';
-import 'package:new_flutter_test/sceen/period_round.dart';
 import 'package:new_flutter_test/service/shared_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
@@ -14,24 +13,20 @@ import 'package:http/http.dart' as http;
 import 'package:qrscan/qrscan.dart' as scanner;
 
 import '../config.dart';
+import 'menu.dart';
 
-class Scanner extends StatefulWidget {
-  final int brachID;
-  final String dateTimeNow;
-  const Scanner({
-    Key? key,
-    required this.brachID,
-    required this.dateTimeNow,
-  }) : super(key: key);
+class PermissionBranch extends StatefulWidget {
+  const PermissionBranch({Key? key}) : super(key: key);
 
   @override
-  _ScannerState createState() => _ScannerState();
+  _PermissionBranchState createState() => _PermissionBranchState();
 }
 
-class _ScannerState extends State<Scanner> {
+class _PermissionBranchState extends State<PermissionBranch> {
+  int? _mySelection;
   String? res_Detail;
   String? date_login;
-  bool _isButtonDisabled = false;
+  List permission_branch = [];
   String? userCode;
   int? userBranch;
   bool isAPIcallProcess = false;
@@ -42,43 +37,35 @@ class _ScannerState extends State<Scanner> {
   @override
   dynamic initState() {
     super.initState();
-    getUser();
+    getperMissionBranch();
   }
 
-  void getUser() async {
+  void getperMissionBranch() async {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json; charset=utf-8',
     };
-    // SharedPreferences pref = await SharedPreferences.getInstance();
-    // setState(() {
-    //   userBranch = pref.getInt("BranchID")!;
-    //   userCode = pref.getString("UserCode")!;
-    //   date_login = pref.getString("Date_Login")!;
-    // });
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setState(() {
+      userCode = pref.getString("UserCode")!;
+      userBranch = pref.getInt("BranchID")!;
+    });
     if (date_login.toString().isNotEmpty) {
       var client = http.Client();
-      var url = Uri.http(Config.apiURL, Config.periodLogin);
+      var url = Uri.http(Config.apiURL, Config.permissionBranch);
       var response = await client.post(
         url,
         headers: requestHeaders,
         body: jsonEncode({
-          "BeginDate": widget.dateTimeNow,
-          "EndDate": widget.dateTimeNow,
+          "userCode": userCode,
         }),
       );
       if (response.statusCode == 200) {
-        final body = jsonDecode(response.body);
-        pageRoute(body);
+        final body = jsonDecode(response.body)['data'];
         setState(() {
-          _isButtonDisabled = true;
+          permission_branch = body;
         });
       }
     }
-  }
-
-  static pageRoute(dynamic body) async {
-    SharedPreferences roundid = await SharedPreferences.getInstance();
-    await roundid.setString("RoundID", body['PeriodRound']);
   }
 
   @override
@@ -86,19 +73,30 @@ class _ScannerState extends State<Scanner> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          title: Text(
+            "Initial: " +
+                userCode.toString() +
+                ' (' +
+                userBranch.toString() +
+                ')',
+            style: const TextStyle(
+                fontSize: 18, color: Color.fromRGBO(40, 59, 113, 1)),
+          ),
           elevation: 0,
           backgroundColor: Colors.white,
-          leading: IconButton(
-              color: Colors.white,
-              icon: const Icon(
-                Icons.arrow_back,
-                color: Color.fromRGBO(40, 59, 113, 1),
-                size: 28,
-              ),
+          actions: <Widget>[
+            new IconButton(
               onPressed: () {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, '/permission_branch', (route) => false);
-              }),
+                FormHelper.showSimpleAlertDialog(
+                    context, Config.appName, "คุณออกจากระบบแล้ว", "ยอมรับ", () {
+                  SharedService.logout(context);
+                });
+              },
+              icon: const Icon(Icons.logout),
+              color: const Color.fromRGBO(40, 59, 113, 1),
+              iconSize: 28,
+            )
+          ],
         ),
         backgroundColor: HexColor('#283B71'),
         body: ProgressHUD(
@@ -197,69 +195,55 @@ class _ScannerState extends State<Scanner> {
                       const SizedBox(
                         height: 30,
                       ),
-                      Visibility(
-                        visible: _isButtonDisabled,
-                        child: Card(
-                          elevation: 4.0,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => TestAsset(
-                                    dateTimeNow: widget.dateTimeNow,
-                                    branchPermission: widget.brachID,
+                      Card(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 15.0, right: 20.0, top: 8.0, bottom: 8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              DropdownButton(
+                                icon: const Icon(Icons.arrow_drop_down),
+                                iconSize: 38,
+                                underline: const SizedBox(),
+                                hint: const Text(
+                                  'กรุณาเลือกสาขา',
+                                  style: TextStyle(
+                                    fontSize: 25.0,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                              );
-                            },
-                            splashColor: const Color.fromRGBO(40, 59, 113, 1),
-                            child: Container(
-                              padding: const EdgeInsets.only(
-                                  top: 15.0, bottom: 15.0, right: 15.0),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(22.0)),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  const Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 10.0, right: 20.0),
-                                    child: Icon(
-                                      Icons.qr_code_2_rounded,
-                                      color: Color.fromRGBO(45, 69, 135, 1),
-                                      size: 40.0,
+                                items: permission_branch.map((item) {
+                                  return DropdownMenuItem(
+                                    child: Text(
+                                      item['BranchID'].toString(),
+                                      style: const TextStyle(
+                                        fontSize: 25.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color.fromRGBO(40, 59, 113, 1),
+                                      ),
                                     ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Column(
-                                          children: const <Widget>[
-                                            Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                "สแกน Qr code",
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                  fontSize: 25.0,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color.fromRGBO(
-                                                      40, 59, 113, 1),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                                    value: item['BranchID'],
+                                  );
+                                }).toList(),
+                                onChanged: (newVal) {
+                                  setState(() {
+                                    final now = DateTime.now();
+                                    _mySelection = newVal as int;
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => Scanner(
+                                          brachID: _mySelection!,
+                                          dateTimeNow: now.toString(),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                      ),
+                                    );
+                                  });
+                                },
+                                value: _mySelection,
                               ),
-                            ),
+                            ],
                           ),
                         ),
                       ),
@@ -270,14 +254,7 @@ class _ScannerState extends State<Scanner> {
                         elevation: 4.0,
                         child: InkWell(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => PeriodRound(
-                                  branchPermission: widget.brachID,
-                                ),
-                              ),
-                            );
+                            checkQR();
                           },
                           splashColor: const Color.fromRGBO(40, 59, 113, 1),
                           child: Container(
@@ -293,7 +270,7 @@ class _ScannerState extends State<Scanner> {
                                   padding:
                                       EdgeInsets.only(left: 10.0, right: 20.0),
                                   child: Icon(
-                                    Icons.article,
+                                    Icons.check_circle,
                                     color: Color.fromRGBO(40, 59, 113, 1),
                                     size: 40.0,
                                   ),
@@ -308,7 +285,7 @@ class _ScannerState extends State<Scanner> {
                                           Align(
                                             alignment: Alignment.centerLeft,
                                             child: Text(
-                                              "รายการทรัพย์สิน",
+                                              "ตรวจสอบ Qr Code",
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontSize: 25.0,

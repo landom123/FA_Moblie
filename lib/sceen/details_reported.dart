@@ -435,6 +435,7 @@ class _DetailsReportedState extends State<DetailsReported> {
                 period_round: widget.round,
                 beginDate: widget.date,
                 endDate: widget.date,
+                branchPermission: 0,
               ),
             ),
           );
@@ -453,6 +454,7 @@ class _DetailsReportedState extends State<DetailsReported> {
                 period_round: widget.round,
                 beginDate: widget.date,
                 endDate: widget.date,
+                branchPermission: 0,
               ),
             ),
           );

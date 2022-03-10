@@ -13,8 +13,16 @@ import 'package:snippet_coder_utils/hex_color.dart';
 import 'package:new_flutter_test/config.dart';
 import 'package:http/http.dart' as http;
 
+import 'menu.dart';
+
 class TestAsset extends StatefulWidget {
-  const TestAsset({Key? key}) : super(key: key);
+  final int branchPermission;
+  final String dateTimeNow;
+  const TestAsset({
+    Key? key,
+    required this.branchPermission,
+    required this.dateTimeNow,
+  }) : super(key: key);
 
   @override
   _TestAssetState createState() => _TestAssetState();
@@ -43,6 +51,7 @@ class _TestAssetState extends State<TestAsset> {
   bool _visibleRead = false;
   dynamic itemOfName = [];
   var round_id = TextEditingController();
+  final now = DateTime.now();
 
   @override
   dynamic initState() {
@@ -78,8 +87,15 @@ class _TestAssetState extends State<TestAsset> {
                 size: 28,
               ),
               onPressed: () {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, '/scanner', (route) => false);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => Scanner(
+                      brachID: widget.branchPermission,
+                      dateTimeNow: now.toString(),
+                    ),
+                  ),
+                );
               },
             ),
           ]),

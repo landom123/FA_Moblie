@@ -9,17 +9,20 @@ import 'package:http/http.dart' as http;
 import '../config.dart';
 import 'details_reported.dart';
 import 'no_count_sceen.dart';
+import 'period_round.dart';
 
 class ViewDetails extends StatefulWidget {
   final String period_round;
   final String beginDate;
   final String endDate;
-  ViewDetails(
-      {Key? key,
-      required this.period_round,
-      required this.beginDate,
-      required this.endDate})
-      : super(key: key);
+  final int branchPermission;
+  const ViewDetails({
+    Key? key,
+    required this.period_round,
+    required this.beginDate,
+    required this.endDate,
+    required this.branchPermission,
+  }) : super(key: key);
 
   @override
   _ViewDetailsState createState() => _ViewDetailsState();
@@ -64,8 +67,8 @@ class _ViewDetailsState extends State<ViewDetails> {
         url,
         headers: requestHeaders,
         body: jsonEncode({
-          "UserBranch": userBranch.toString(),
-          "BranchID": userBranch.toString(),
+          "UserBranch": widget.branchPermission,
+          "BranchID": widget.branchPermission,
           "RoundID": widget.period_round.toString(),
         }),
       );
@@ -98,7 +101,7 @@ class _ViewDetailsState extends State<ViewDetails> {
         url,
         headers: requestHeaders,
         body: jsonEncode({
-          "BranchID": userBranch.toString(),
+          "BranchID": widget.branchPermission,
           "RoundID": widget.period_round.toString()
         }),
       );
@@ -131,8 +134,8 @@ class _ViewDetailsState extends State<ViewDetails> {
         url,
         headers: requestHeaders,
         body: jsonEncode({
-          "UserBranch": userBranch.toString(),
-          "BranchID": userBranch.toString(),
+          "UserBranch": widget.branchPermission,
+          "BranchID": widget.branchPermission,
           "RoundID": widget.period_round.toString()
         }),
       );
@@ -192,7 +195,7 @@ class _ViewDetailsState extends State<ViewDetails> {
               ),
             ),
             title: Text(
-              'ทรัพย์สิน สาขาที่ : $userBranch',
+              'ทรัพย์สิน สาขาที่ : ' + widget.branchPermission.toString(),
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             leading: Row(children: <Widget>[
@@ -200,17 +203,22 @@ class _ViewDetailsState extends State<ViewDetails> {
                 width: 5.0,
               ),
               IconButton(
-                color: Colors.white,
-                icon: const Icon(
-                  Icons.arrow_back,
                   color: Colors.white,
-                  size: 28,
-                ),
-                onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(context,
-                      '/scanner/viewDetails/periodRound', (route) => false);
-                },
-              ),
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                    size: 28,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => PeriodRound(
+                          branchPermission: widget.branchPermission,
+                        ),
+                      ),
+                    );
+                  }),
             ]),
             centerTitle: true,
             elevation: 0,

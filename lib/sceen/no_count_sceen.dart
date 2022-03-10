@@ -296,6 +296,7 @@ class _NoCountedSceenState extends State<NoCountedSceen> {
                       period_round: roundid.getString("RoundID")!,
                       beginDate: now.toString(),
                       endDate: now.toString(),
+                      branchPermission: 0,
                     ),
                   ),
                 );
@@ -318,6 +319,7 @@ class _NoCountedSceenState extends State<NoCountedSceen> {
                       period_round: roundid.getString("RoundID")!,
                       beginDate: now.toString(),
                       endDate: now.toString(),
+                      branchPermission: 0,
                     ),
                   ),
                 );

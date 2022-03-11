@@ -21,4 +21,6 @@ class Config {
   static const String lostAsset = "/api/lostAssets"; // LostAssets
   static const String permissionBranch =
       "/api/permission_branch"; // permission_branch
+  static const String checkCodeResult =
+      "/api/check_code_result"; // check Code Result
 }

@@ -69,7 +69,7 @@ class _ViewDetailsState extends State<ViewDetails> {
         body: jsonEncode({
           "UserBranch": widget.branchPermission,
           "BranchID": widget.branchPermission,
-          "RoundID": widget.period_round.toString(),
+          "RoundID": widget.period_round,
         }),
       );
       if (response.statusCode == 200) {
@@ -102,7 +102,7 @@ class _ViewDetailsState extends State<ViewDetails> {
         headers: requestHeaders,
         body: jsonEncode({
           "BranchID": widget.branchPermission,
-          "RoundID": widget.period_round.toString()
+          "RoundID": widget.period_round,
         }),
       );
       if (response.statusCode == 200) {
@@ -136,7 +136,7 @@ class _ViewDetailsState extends State<ViewDetails> {
         body: jsonEncode({
           "UserBranch": widget.branchPermission,
           "BranchID": widget.branchPermission,
-          "RoundID": widget.period_round.toString()
+          "RoundID": widget.period_round,
         }),
       );
       if (response.statusCode == 200) {
@@ -276,6 +276,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                             round: index['RoundID'].toString(),
                             userCode: userID,
                             userBranch: branchuserID.toString(),
+                            backBranch: widget.branchPermission,
                           )));
             },
             title: Row(
@@ -382,6 +383,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                             round: index['RoundID'].toString(),
                             userCode: userID.toString(),
                             userBranch: branchuserID.toString(),
+                            backBranch: widget.branchPermission,
                           )));
             },
             title: Row(

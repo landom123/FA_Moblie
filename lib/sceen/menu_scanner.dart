@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:intl/intl.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
@@ -35,7 +36,7 @@ class _TestAssetState extends State<TestAsset> {
   var nameController = TextEditingController();
   var branchController = TextEditingController();
   var dateTimeController = TextEditingController();
-  var statusController = TextEditingController();
+  int statusController = 1;
   var assetIDController = TextEditingController();
   var referenceController = TextEditingController();
   String referenceSetState1 = "ชำรุดรอซ่อม";
@@ -51,7 +52,7 @@ class _TestAssetState extends State<TestAsset> {
   bool _visibleRead = false;
   dynamic itemOfName = [];
   var round_id = TextEditingController();
-  final now = DateTime.now();
+  var now = DateTime.now();
 
   @override
   dynamic initState() {
@@ -436,20 +437,13 @@ class _TestAssetState extends State<TestAsset> {
 
   //Scan
   Future<void> startScan() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences roundid = await SharedPreferences.getInstance();
     try {
       String? cameraScanResult = await scanner.scan();
       setState(() {
         codeController.text = cameraScanResult!;
       });
-      // String cameraScanResult = await FlutterBarcodeScanner.scanBarcode(
-      //   '#004297',
-      //   'Cancel',
-      //   true,
-      //   ScanMode.QR,
-      // );
-      // setState(() {
-      //   codeController.text = cameraScanResult;
-      // });
 
       if (codeController.text.isNotEmpty) {
         Map<String, String> requestHeaders = {
@@ -461,18 +455,19 @@ class _TestAssetState extends State<TestAsset> {
         var response = await client.post(
           url,
           headers: requestHeaders,
-          body: jsonEncode({"Code": codeController.text}),
+          body: jsonEncode({
+            "Code": codeController.text,
+            "UserBranch": widget.branchPermission,
+            "RoundID": roundid.getString("RoundID")!,
+          }),
         );
         if (response.statusCode == 200) {
           dynamic itemsResponse = jsonDecode(response.body);
-          SharedPreferences pref = await SharedPreferences.getInstance();
-          SharedPreferences roundid = await SharedPreferences.getInstance();
           setState(() {
             nameController.text = itemsResponse['data'][0]['Name'];
-            dateTimeController.text = itemsResponse['date'].toString();
+            dateTimeController.text = '$now';
             branchController.text =
                 itemsResponse['data'][0]['BranchID'].toString();
-            statusController.text = itemsResponse['status'].toString();
             assetIDController.text =
                 itemsResponse['data'][0]['AssetID'].toString();
             userID = pref.getString("UserID")!;
@@ -484,7 +479,6 @@ class _TestAssetState extends State<TestAsset> {
               nameController.text.isNotEmpty &&
               branchController.text.isNotEmpty &&
               dateTimeController.text.isNotEmpty &&
-              statusController.text.isNotEmpty &&
               assetIDController.text.isNotEmpty &&
               userID.toString().isNotEmpty) {
             var client = http.Client();
@@ -493,14 +487,13 @@ class _TestAssetState extends State<TestAsset> {
               url,
               headers: requestHeaders,
               body: jsonEncode({
-                "AssetID": assetIDController.text,
-                "Code": codeController.text,
                 "Name": nameController.text,
+                "Code": codeController.text,
                 "BranchID": branchController.text,
                 "Date": dateTimeController.text,
-                "Status": statusController.text,
+                "Status": statusController,
                 "UserID": userID,
-                "UserBranch": userBranchID.toString(),
+                "UserBranch": widget.branchPermission,
                 "RoundID": round_id.text,
                 "Reference": referenceController.text,
               }),
@@ -529,14 +522,17 @@ class _TestAssetState extends State<TestAsset> {
                   nameController.clear();
                   branchController.clear();
                   dateTimeController.clear();
-                  statusController.clear();
                 });
               });
             }
           }
         } else {
+          dynamic itemsResponse = jsonDecode(response.body);
           FormHelper.showSimpleAlertDialog(
-              context, Config.appName, "ไม่พบ Code นี้ในระบบ", "ยอมรับ", () {
+              context,
+              Config.appName,
+              itemsResponse['message'] + itemsResponse['data'].toString(),
+              "ยอมรับ", () {
             Navigator.pop(context);
           });
         }

@@ -226,6 +226,8 @@ class _NoCountedSceenState extends State<NoCountedSceen> {
   }
 
   Future<void> _createupdate() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences roundid = await SharedPreferences.getInstance();
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json; charset=utf-8',
     };
@@ -235,11 +237,13 @@ class _NoCountedSceenState extends State<NoCountedSceen> {
     var response1 = await client.post(
       url,
       headers: requestHeaders,
-      body: jsonEncode({"Code": widget.codeAssets}),
+      body: jsonEncode({
+        "Code": widget.codeAssets,
+        "UserBranch": widget.brachID,
+        "RoundID": roundid.getString("RoundID")!,
+      }),
     );
     if (response1.statusCode == 200) {
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      SharedPreferences roundid = await SharedPreferences.getInstance();
       var client = http.Client();
       var url = Uri.http(Config.apiURL, Config.periodLogin);
       var response = await client.post(
@@ -271,14 +275,13 @@ class _NoCountedSceenState extends State<NoCountedSceen> {
             url,
             headers: requestHeaders,
             body: jsonEncode({
-              "AssetID": widget.assetID,
-              "Code": widget.codeAssets,
               "Name": widget.titleName,
+              "Code": widget.codeAssets,
               "BranchID": widget.brachID.toInt(),
-              "Date": now.toString(),
-              "Status": status.toString(),
+              "Date": '$now',
+              "Status": status,
               "UserID": pref.getString("UserID")!,
-              "UserBranch": pref.getInt("BranchID")!,
+              "UserBranch": widget.brachID,
               "RoundID": roundid.getString("RoundID")!,
               "Reference": referenceController.text,
             }),
@@ -296,7 +299,7 @@ class _NoCountedSceenState extends State<NoCountedSceen> {
                       period_round: roundid.getString("RoundID")!,
                       beginDate: now.toString(),
                       endDate: now.toString(),
-                      branchPermission: 0,
+                      branchPermission: widget.brachID,
                     ),
                   ),
                 );
@@ -319,7 +322,7 @@ class _NoCountedSceenState extends State<NoCountedSceen> {
                       period_round: roundid.getString("RoundID")!,
                       beginDate: now.toString(),
                       endDate: now.toString(),
-                      branchPermission: 0,
+                      branchPermission: widget.brachID,
                     ),
                   ),
                 );

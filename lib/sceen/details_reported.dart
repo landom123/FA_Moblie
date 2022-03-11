@@ -19,6 +19,7 @@ class DetailsReported extends StatefulWidget {
   final String round;
   final String userCode;
   final String userBranch;
+  final int backBranch;
   DetailsReported({
     Key? key,
     required this.titleName,
@@ -29,6 +30,7 @@ class DetailsReported extends StatefulWidget {
     required this.round,
     required this.userCode,
     required this.userBranch,
+    required this.backBranch,
   }) : super(key: key);
   @override
   _DetailsReportedState createState() => _DetailsReportedState();
@@ -211,7 +213,7 @@ class _DetailsReportedState extends State<DetailsReported> {
                   height: 10,
                 ),
                 Text(
-                  'สาขาของผู้บันทึก :  ' + widget.userBranch,
+                  'สาขาที่ทำการบันทึก :  ' + widget.userBranch,
                   style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       //fontStyle: FontStyle.italic,
@@ -435,7 +437,7 @@ class _DetailsReportedState extends State<DetailsReported> {
                 period_round: widget.round,
                 beginDate: widget.date,
                 endDate: widget.date,
-                branchPermission: 0,
+                branchPermission: widget.backBranch,
               ),
             ),
           );
@@ -454,7 +456,7 @@ class _DetailsReportedState extends State<DetailsReported> {
                 period_round: widget.round,
                 beginDate: widget.date,
                 endDate: widget.date,
-                branchPermission: 0,
+                branchPermission: widget.backBranch,
               ),
             ),
           );

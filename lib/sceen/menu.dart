@@ -158,18 +158,18 @@ class _ScannerState extends State<Scanner> {
               children: <Widget>[
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const <Widget>[
+                  children: <Widget>[
                     Text(
-                      "ยินดีต้อนรับสู่ แอปพลิเคชัน",
-                      style: TextStyle(
+                      "ยินดีต้อนรับสู่สาขาที่ " + widget.brachID.toString(),
+                      style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 24,
                           color: Colors.white),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 4,
                     ),
-                    Text(
+                    const Text(
                       "กรุณาเลือกเมนู ",
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
@@ -338,50 +338,5 @@ class _ScannerState extends State<Scanner> {
         ],
       ),
     );
-  }
-
-  Future<void> checkQR() async {
-    String? cameraScanResult = await scanner.scan();
-    setState(() {
-      resultScan = cameraScanResult!;
-    });
-    if (resultScan.toString().isNotEmpty) {
-      Map<String, String> requestHeaders = {
-        'Content-Type': 'application/json; charset=utf-8',
-      };
-      var client = http.Client();
-      var url = Uri.http(Config.apiURL, Config.assetsAPI);
-
-      var response = await client.post(
-        url,
-        headers: requestHeaders,
-        body: jsonEncode({"Code": resultScan}),
-      );
-      if (response.statusCode == 200) {
-        setState(() {
-          dynamic itemsResponse = jsonDecode(response.body)['data'][0];
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => CheckCode(
-                titleName: itemsResponse['Name'],
-                codeAssets: itemsResponse['Code'],
-                brachID: itemsResponse['BranchID'],
-              ),
-            ),
-          );
-        });
-      } else {
-        FormHelper.showSimpleAlertDialog(
-            context, Config.appName, "ไม่พบ Code นี้ในระบบ", "OK", () {
-          Navigator.pop(context);
-        });
-      }
-    } else {
-      FormHelper.showSimpleAlertDialog(
-          context, Config.appName, 'กรุณาสแกน Code บ้างอย่าง', "OK", () {
-        Navigator.pop(context);
-      });
-    }
   }
 }

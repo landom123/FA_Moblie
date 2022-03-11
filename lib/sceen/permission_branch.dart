@@ -33,6 +33,7 @@ class _PermissionBranchState extends State<PermissionBranch> {
   bool hidePassword = true;
   GlobalKey<FormState> globaAssetsFormkey = GlobalKey<FormState>();
   String? resultScan;
+  bool _visibleRead = false;
 
   @override
   dynamic initState() {
@@ -61,9 +62,12 @@ class _PermissionBranchState extends State<PermissionBranch> {
       );
       if (response.statusCode == 200) {
         final body = jsonDecode(response.body)['data'];
-        setState(() {
-          permission_branch = body;
-        });
+        if (body[0]['result'] != 'non') {
+          setState(() {
+            permission_branch = body;
+            _visibleRead = true;
+          });
+        }
       }
     }
   }
@@ -195,55 +199,58 @@ class _PermissionBranchState extends State<PermissionBranch> {
                       const SizedBox(
                         height: 30,
                       ),
-                      Card(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 15.0, right: 20.0, top: 8.0, bottom: 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              DropdownButton(
-                                icon: const Icon(Icons.arrow_drop_down),
-                                iconSize: 38,
-                                underline: const SizedBox(),
-                                hint: const Text(
-                                  'กรุณาเลือกสาขา',
-                                  style: TextStyle(
-                                    fontSize: 25.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                items: permission_branch.map((item) {
-                                  return DropdownMenuItem(
-                                    child: Text(
-                                      item['BranchID'].toString(),
-                                      style: const TextStyle(
-                                        fontSize: 25.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color.fromRGBO(40, 59, 113, 1),
-                                      ),
+                      Visibility(
+                        visible: _visibleRead,
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 15.0, right: 20.0, top: 8.0, bottom: 8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                DropdownButton(
+                                  icon: const Icon(Icons.arrow_drop_down),
+                                  iconSize: 38,
+                                  underline: const SizedBox(),
+                                  hint: const Text(
+                                    'กรุณาเลือกสาขา',
+                                    style: TextStyle(
+                                      fontSize: 25.0,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    value: item['BranchID'],
-                                  );
-                                }).toList(),
-                                onChanged: (newVal) {
-                                  setState(() {
-                                    final now = DateTime.now();
-                                    _mySelection = newVal as int;
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => Scanner(
-                                          brachID: _mySelection!,
-                                          dateTimeNow: now.toString(),
+                                  ),
+                                  items: permission_branch.map((item) {
+                                    return DropdownMenuItem(
+                                      child: Text(
+                                        item['BranchID'].toString(),
+                                        style: const TextStyle(
+                                          fontSize: 25.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color.fromRGBO(40, 59, 113, 1),
                                         ),
                                       ),
+                                      value: item['BranchID'],
                                     );
-                                  });
-                                },
-                                value: _mySelection,
-                              ),
-                            ],
+                                  }).toList(),
+                                  onChanged: (newVal) {
+                                    setState(() {
+                                      final now = DateTime.now();
+                                      _mySelection = newVal as int;
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => Scanner(
+                                            brachID: _mySelection!,
+                                            dateTimeNow: now.toString(),
+                                          ),
+                                        ),
+                                      );
+                                    });
+                                  },
+                                  value: _mySelection,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -327,12 +334,14 @@ class _PermissionBranchState extends State<PermissionBranch> {
         'Content-Type': 'application/json; charset=utf-8',
       };
       var client = http.Client();
-      var url = Uri.http(Config.apiURL, Config.assetsAPI);
+      var url = Uri.http(Config.apiURL, Config.checkCodeResult);
 
       var response = await client.post(
         url,
         headers: requestHeaders,
-        body: jsonEncode({"Code": resultScan}),
+        body: jsonEncode({
+          "Code": resultScan,
+        }),
       );
       if (response.statusCode == 200) {
         setState(() {

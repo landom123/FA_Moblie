@@ -103,6 +103,7 @@ class _PeriodRoundState extends State<PeriodRound> {
     var beginDate = index['BeginDate'];
     var endDate = index['EndDate'];
     var branchID = index['BranchID'];
+    var description = index['Description'];
     DateTime dateBegin = DateTime.parse(beginDate);
     final DateFormat formatter = DateFormat('yyyy/MM/dd');
     final String period_dateBegin = formatter.format(dateBegin);
@@ -139,9 +140,18 @@ class _PeriodRoundState extends State<PeriodRound> {
                   children: <Widget>[
                     SizedBox(
                       width: 280,
-                      child: Text('รอบที่ทำการบันทึก: $period_round',
+                      child: Text('เปิดสำหรับ: $description',
                           style: const TextStyle(
                               fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white)),
+                    ),
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      width: 280,
+                      child: Text('รอบที่ทำการบันทึก: $period_round',
+                          style: const TextStyle(
+                              fontSize: 14,
                               fontWeight: FontWeight.w600,
                               color: Colors.white)),
                     ),

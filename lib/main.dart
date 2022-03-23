@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:new_flutter_test/sceen/menu_scanner.dart';
-import 'package:new_flutter_test/sceen/period_round.dart';
 import 'package:new_flutter_test/service/shared_service.dart';
 import 'package:new_flutter_test/sceen/login_sceen.dart';
-import 'package:new_flutter_test/sceen/menu.dart';
-import 'sceen/menu_reported.dart';
 import 'sceen/permission_branch.dart';
 
 // Widget _defaultHome = const LohinSceen();

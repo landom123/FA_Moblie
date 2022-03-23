@@ -4,8 +4,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:intl/intl.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
@@ -148,28 +146,29 @@ class _TestAssetState extends State<TestAsset> {
               ],
             ),
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: 30),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const <Widget>[
               Padding(
                 padding: EdgeInsets.only(left: 35, right: 16),
                 child: Text(
-                  'กดที่ เริ่มสแกน',
+                  'กดที่ สแกน QR CODE',
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 24.0,
                       fontWeight: FontWeight.bold),
                 ),
               ),
+              SizedBox(height: 4),
               Padding(
                 padding: EdgeInsets.only(left: 35, right: 16),
                 child: Text(
-                  'เพื่อทำการนับทรัพย์สิน',
+                  'เพื่อทำการเปิดกล้อง',
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.bold),
+                      color: Color(0xffa29aac),
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w500),
                 ),
               ),
             ],
@@ -371,60 +370,66 @@ class _TestAssetState extends State<TestAsset> {
             ),
           ),
           Center(
-            child: SizedBox(
-              width: 330,
-              child: Container(
-                alignment: Alignment.topCenter,
-                padding:
-                    const EdgeInsets.only(top: 10, right: 15.0, left: 15.0),
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  child: ListView(
-                    primary: false,
-                    children: <Widget>[
-                      const SizedBox(height: 10),
-                      Card(
-                        elevation: 4.0,
-                        child: InkWell(
-                          onTap: () {
-                            startScan();
-                          },
-                          splashColor: const Color.fromRGBO(45, 69, 135, 1),
-                          child: Container(
-                            padding:
-                                const EdgeInsets.only(top: 16.0, bottom: 16.0),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(22.0)),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 20, right: 20.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const <Widget>[
-                                  Icon(
-                                    Icons.camera,
-                                    color: Color.fromRGBO(40, 59, 113, 1),
-                                    size: 35.0,
-                                  ),
-                                  SizedBox(width: 20),
-                                  Text(
-                                    "เริ่มสแกน",
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                      fontSize: 28.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color.fromRGBO(40, 59, 113, 1),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+              child: Card(
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(16))),
+                margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                elevation: 4.0,
+                child: InkWell(
+                  focusColor: const Color.fromRGBO(40, 59, 113, 1),
+                  hoverColor: const Color.fromRGBO(40, 59, 113, 1),
+                  onTap: () {
+                    startScan();
+                  },
+                  splashColor: const Color.fromRGBO(45, 69, 135, 1),
+                  child: Container(
+                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(22.0)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          child: const Icon(
+                            Icons.qr_code_2_rounded,
+                            color: Color.fromRGBO(40, 59, 113, 1),
+                            size: 35.0,
                           ),
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Column(
+                                  children: const [
+                                    Text(
+                                      "สแกน QR CODE",
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                        fontSize: 28.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color.fromRGBO(40, 59, 113, 1),
+                                      ),
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      'สแกนนับทรัพย์สินและการทำบันทึก',
+                                      style: TextStyle(color: Colors.black38),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

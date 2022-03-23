@@ -1,24 +1,20 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:new_flutter_test/sceen/menu_reported.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
-import 'package:http/http.dart' as http;
-import '../config.dart';
 
+// ignore: must_be_immutable
 class CheckCode extends StatefulWidget {
   final oCcy = NumberFormat("#,##0.00", "th");
   final String titleName;
   final String codeAssets;
   final int brachID;
+  late String images;
   CheckCode({
     Key? key,
     required this.titleName,
     required this.codeAssets,
     required this.brachID,
+    required this.images,
   }) : super(key: key);
   @override
   _CheckCodeState createState() => _CheckCodeState();
@@ -32,8 +28,6 @@ class _CheckCodeState extends State<CheckCode> {
   String referenceSetState1 = 'ชำรุดรอซ่อม';
   String referenceSetState2 = 'รอตัดชำรุด';
   String referenceSetState3 = '';
-  bool _visible = false;
-  bool _visible2 = false;
   var titleName = TextEditingController();
 
   @override
@@ -70,6 +64,10 @@ class _CheckCodeState extends State<CheckCode> {
   }
 
   Widget assetsReported() {
+    if (widget.images == 'null') {
+      widget.images =
+          'http://vpnptec.dyndns.org:10280/OPS_Fileupload/ATT_220300020.png';
+    }
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -181,6 +179,8 @@ class _CheckCodeState extends State<CheckCode> {
                 const SizedBox(
                   height: 10,
                 ),
+                Center(child: Image.network(widget.images, fit: BoxFit.cover)),
+                const SizedBox(height: 10),
               ],
             ),
           ),

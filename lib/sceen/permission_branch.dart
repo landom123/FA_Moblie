@@ -1,6 +1,5 @@
 // ignore_for_file: file_names, unnecessary_new, unused_field, non_constant_identifier_names, unused_import
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:new_flutter_test/sceen/check_code.dart';
@@ -34,11 +33,14 @@ class _PermissionBranchState extends State<PermissionBranch> {
   GlobalKey<FormState> globaAssetsFormkey = GlobalKey<FormState>();
   String? resultScan;
   bool _visibleRead = false;
+  final now = DateTime.now();
+  String? round;
 
   @override
   dynamic initState() {
     super.initState();
     getperMissionBranch();
+    getround();
   }
 
   void getperMissionBranch() async {
@@ -68,6 +70,29 @@ class _PermissionBranchState extends State<PermissionBranch> {
             _visibleRead = true;
           });
         }
+      }
+    }
+  }
+
+  void getround() async {
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json; charset=utf-8',
+    };
+    if (date_login.toString().isNotEmpty) {
+      var client = http.Client();
+      var url = Uri.http(Config.apiURL, Config.periodLogin);
+      var response = await client.post(
+        url,
+        headers: requestHeaders,
+        body: jsonEncode({
+          "BeginDate": now.toString(),
+          "EndDate": now.toString(),
+        }),
+      );
+      if (response.statusCode == 200) {
+        setState(() {
+          round = jsonDecode(response.body)['PeriodRound'];
+        });
       }
     }
   }
@@ -174,7 +199,7 @@ class _PermissionBranchState extends State<PermissionBranch> {
                     Text(
                       "กรุณาเลือกเมนู ",
                       style: TextStyle(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                           fontSize: 18,
                           color: Color(0xffa29aac)),
                     ),
@@ -186,10 +211,10 @@ class _PermissionBranchState extends State<PermissionBranch> {
           //
           Center(
             child: Padding(
-              padding: const EdgeInsets.only(left: 8, right: 8),
+              padding: const EdgeInsets.only(left: 16.0, right: 8.0),
               child: Container(
                 alignment: Alignment.topCenter,
-                padding: const EdgeInsets.only(top: 5, right: 10.0, left: 20.0),
+                padding: const EdgeInsets.only(top: 5, right: 10.0),
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
@@ -202,52 +227,98 @@ class _PermissionBranchState extends State<PermissionBranch> {
                       Visibility(
                         visible: _visibleRead,
                         child: Card(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 15.0, right: 20.0, top: 8.0, bottom: 8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Container(
+                            padding:
+                                const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(22.0)),
+                            child: Row(
                               children: [
-                                DropdownButton(
-                                  icon: const Icon(Icons.arrow_drop_down),
-                                  iconSize: 38,
-                                  underline: const SizedBox(),
-                                  hint: const Text(
-                                    'กรุณาเลือกสาขา',
-                                    style: TextStyle(
-                                      fontSize: 25.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                Container(
+                                  padding: const EdgeInsets.all(16),
+                                  child: const Icon(
+                                    Icons.menu,
+                                    color: Color.fromRGBO(40, 59, 113, 1),
+                                    size: 30.0,
                                   ),
-                                  items: permission_branch.map((item) {
-                                    return DropdownMenuItem(
-                                      child: Text(
-                                        item['BranchID'].toString(),
-                                        style: const TextStyle(
-                                          fontSize: 25.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color.fromRGBO(40, 59, 113, 1),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Column(
+                                          children: [
+                                            DropdownButton(
+                                              icon: const Icon(
+                                                  Icons.arrow_drop_down),
+                                              iconSize: 36.0,
+                                              underline: const SizedBox(),
+                                              hint: const Text(
+                                                'กรุณาเลือกสาขา',
+                                                style: TextStyle(
+                                                  fontSize: 25.0,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color.fromRGBO(
+                                                      40, 59, 113, 1),
+                                                ),
+                                              ),
+                                              items:
+                                                  permission_branch.map((item) {
+                                                return DropdownMenuItem(
+                                                  child: Text(
+                                                    item['BranchID'].toString(),
+                                                    style: const TextStyle(
+                                                      fontSize: 25.0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Color.fromRGBO(
+                                                          40, 59, 113, 1),
+                                                    ),
+                                                  ),
+                                                  value: item['BranchID'],
+                                                );
+                                              }).toList(),
+                                              focusColor: const Color.fromRGBO(
+                                                  40, 59, 113, 1),
+                                              iconEnabledColor:
+                                                  const Color.fromRGBO(
+                                                      40, 59, 113, 1),
+                                              onChanged: (newVal) {
+                                                setState(() {
+                                                  _mySelection = newVal as int;
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (_) => Scanner(
+                                                        brachID: _mySelection!,
+                                                        dateTimeNow:
+                                                            now.toString(),
+                                                      ),
+                                                    ),
+                                                  );
+                                                });
+                                              },
+                                              value: _mySelection,
+                                            ),
+                                            const Text(
+                                              'เลือกสาขาเพื่อระบุสาขาของเมนูถัดไป',
+                                              style: TextStyle(
+                                                  color: Colors.black38),
+                                            ),
+                                            const SizedBox(height: 6),
+                                          ],
                                         ),
                                       ),
-                                      value: item['BranchID'],
-                                    );
-                                  }).toList(),
-                                  onChanged: (newVal) {
-                                    setState(() {
-                                      final now = DateTime.now();
-                                      _mySelection = newVal as int;
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) => Scanner(
-                                            brachID: _mySelection!,
-                                            dateTimeNow: now.toString(),
-                                          ),
-                                        ),
-                                      );
-                                    });
-                                  },
-                                  value: _mySelection,
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -255,59 +326,71 @@ class _PermissionBranchState extends State<PermissionBranch> {
                         ),
                       ),
                       const SizedBox(
-                        height: 10,
+                        height: 16,
                       ),
-                      Card(
-                        elevation: 4.0,
-                        child: InkWell(
-                          onTap: () {
-                            checkQR();
-                          },
-                          splashColor: const Color.fromRGBO(40, 59, 113, 1),
-                          child: Container(
-                            padding: const EdgeInsets.only(
-                                top: 15.0, bottom: 15.0, right: 15.0),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(22.0)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                const Padding(
-                                  padding:
-                                      EdgeInsets.only(left: 10.0, right: 20.0),
-                                  child: Icon(
-                                    Icons.check_circle,
-                                    color: Color.fromRGBO(40, 59, 113, 1),
-                                    size: 40.0,
+                      Center(
+                        child: Card(
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                          elevation: 4.0,
+                          child: InkWell(
+                            focusColor: const Color.fromRGBO(40, 59, 113, 1),
+                            hoverColor: const Color.fromRGBO(40, 59, 113, 1),
+                            onTap: () {
+                              checkQR();
+                            },
+                            splashColor: const Color.fromRGBO(40, 59, 113, 1),
+                            child: Container(
+                              padding: const EdgeInsets.only(
+                                  top: 15.0, bottom: 15.0),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(22.0)),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(16),
+                                    child: const Icon(
+                                      Icons.document_scanner,
+                                      color: Color.fromRGBO(40, 59, 113, 1),
+                                      size: 30.0,
+                                    ),
                                   ),
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Column(
-                                        children: const <Widget>[
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              "ตรวจสอบ Qr Code",
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                fontSize: 25.0,
-                                                fontWeight: FontWeight.bold,
-                                                color: Color.fromRGBO(
-                                                    40, 59, 113, 1),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Column(
+                                            children: const [
+                                              Text(
+                                                "ตรวจสอบ Qr Code",
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  fontSize: 25.0,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color.fromRGBO(
+                                                      40, 59, 113, 1),
+                                                ),
                                               ),
-                                            ),
+                                              SizedBox(height: 4),
+                                              Text(
+                                                'สแกนเพื่อตรวจสอบข้อมูลทรัพย์สิน',
+                                                style: TextStyle(
+                                                    color: Colors.black38),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                    ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -341,6 +424,7 @@ class _PermissionBranchState extends State<PermissionBranch> {
         headers: requestHeaders,
         body: jsonEncode({
           "Code": resultScan,
+          "RoundID": round,
         }),
       );
       if (response.statusCode == 200) {
@@ -353,6 +437,7 @@ class _PermissionBranchState extends State<PermissionBranch> {
                 titleName: itemsResponse['Name'],
                 codeAssets: itemsResponse['Code'],
                 brachID: itemsResponse['BranchID'],
+                images: itemsResponse['imagePath'].toString(),
               ),
             ),
           );

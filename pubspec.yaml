@@ -51,7 +51,7 @@ dependencies:
 
 flutter_icons:
     android: true
-    image_path: "assets/icon/FA.png"
+    image_path: "assets/icon/Purethai(FA-Beta) 2.png"
     ios: false
 
 dev_dependencies:

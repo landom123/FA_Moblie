@@ -17,6 +17,7 @@ class NoCountedSceen extends StatefulWidget {
   final String codeAssets;
   final int brachID;
   final String roundID;
+  late String imagePath;
   NoCountedSceen({
     Key? key,
     required this.titleName,
@@ -24,6 +25,7 @@ class NoCountedSceen extends StatefulWidget {
     required this.brachID,
     required this.assetID,
     required this.roundID,
+    required this.imagePath,
   }) : super(key: key);
   @override
   _NoCountedSceenState createState() => _NoCountedSceenState();
@@ -39,6 +41,10 @@ class _NoCountedSceenState extends State<NoCountedSceen> {
   var titleName = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    if (widget.imagePath == 'null') {
+      widget.imagePath =
+          'http://vpnptec.dyndns.org:10280/OPS_Fileupload/ATT_220300020.png';
+    }
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 60,
@@ -72,156 +78,162 @@ class _NoCountedSceenState extends State<NoCountedSceen> {
       titleName.text = widget.titleName;
     });
     return SingleChildScrollView(
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 3.8,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Colors.white, Colors.white]),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(100),
-                  bottomRight: Radius.circular(100),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
+          Widget>[
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height / 3.8,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.white, Colors.white]),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(100),
+              bottomRight: Radius.circular(100),
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Image.asset(
+                  "assets/images/purethai.png",
+                  width: 250,
+                  height: 180,
+                  fit: BoxFit.contain,
                 ),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Image.asset(
-                      "assets/images/purethai.png",
-                      width: 250,
-                      height: 180,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                ],
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 35, top: 30, right: 25),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                readOnly: true,
+                controller: titleName,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  errorBorder: InputBorder.none,
+                  disabledBorder: InputBorder.none,
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 35, top: 30, right: 25),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextField(
-                    readOnly: true,
-                    controller: titleName,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Divider(
-                    color: Colors.white,
-                    thickness: 1,
-                    height: 20,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    'Code :  ' + widget.codeAssets,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        //fontStyle: FontStyle.italic,
-                        fontSize: 18,
-                        color: Colors.white),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    'สาขาที่อยู่ของทรัพย์สิน :  ' + widget.brachID.toString(),
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        //fontStyle: FontStyle.italic,
-                        fontSize: 18,
-                        color: Colors.white),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text(
-                    'ชื่อย่อ :',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        //fontStyle: FontStyle.italic,
-                        fontSize: 18,
-                        color: Colors.white),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Divider(
-                    color: Colors.white,
-                    thickness: 1,
-                    height: 20,
-                  ),
-                ],
+              const SizedBox(
+                height: 10,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20, right: 25),
-              child: Column(
-                children: [
-                  Theme(
-                    data: Theme.of(context)
-                        .copyWith(unselectedWidgetColor: Colors.white),
-                    child: Row(
-                      children: [
-                        Checkbox(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          value: checkBox2,
-                          activeColor: Colors.orangeAccent,
-                          splashRadius: 30,
-                          onChanged: (value) {
-                            setState(() {
-                              checkBox2 = value!;
-                              if (checkBox2 == false) {
-                                referenceController.clear();
-                                _createupdate();
-                              } else {
-                                checkBox = false;
-                                referenceController.text =
-                                    referenceSetState2.toString();
-                                _createupdate();
-                              }
-                            });
-                          },
-                        ),
-                        const Text('QR Code ไม่สมบูรณ์',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                  ),
-                ],
+              const Divider(
+                color: Colors.white,
+                thickness: 1,
+                height: 20,
               ),
-            )
-          ]),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                'Code :  ' + widget.codeAssets,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    //fontStyle: FontStyle.italic,
+                    fontSize: 18,
+                    color: Colors.white),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                'สาขาที่อยู่ของทรัพย์สิน :  ' + widget.brachID.toString(),
+                style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    //fontStyle: FontStyle.italic,
+                    fontSize: 18,
+                    color: Colors.white),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
+                'ชื่อย่อ :',
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    //fontStyle: FontStyle.italic,
+                    fontSize: 18,
+                    color: Colors.white),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Divider(
+                color: Colors.white,
+                thickness: 1,
+                height: 20,
+              ),
+              Center(child: Image.network(widget.imagePath, fit: BoxFit.cover)),
+              const SizedBox(height: 10),
+              const Divider(
+                color: Colors.white,
+                thickness: 1,
+                height: 20,
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 20, right: 25),
+          child: Column(
+            children: [
+              Theme(
+                data: Theme.of(context)
+                    .copyWith(unselectedWidgetColor: Colors.white),
+                child: Row(
+                  children: [
+                    Checkbox(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      value: checkBox2,
+                      activeColor: Colors.orangeAccent,
+                      splashRadius: 30,
+                      onChanged: (value) {
+                        setState(() {
+                          checkBox2 = value!;
+                          if (checkBox2 == false) {
+                            referenceController.clear();
+                            _createupdate();
+                          } else {
+                            checkBox = false;
+                            referenceController.text =
+                                referenceSetState2.toString();
+                            _createupdate();
+                          }
+                        });
+                      },
+                    ),
+                    const Text('QR Code ไม่สมบูรณ์',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        )
+      ]),
     );
   }
 

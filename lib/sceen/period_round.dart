@@ -114,6 +114,8 @@ class _PeriodRoundState extends State<PeriodRound> {
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
       child: Card(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16))),
         color: const Color.fromRGBO(40, 59, 113, 1),
         child: Padding(
           padding: const EdgeInsets.all(10.0),

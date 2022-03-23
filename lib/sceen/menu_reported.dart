@@ -1,8 +1,5 @@
 import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -259,6 +256,8 @@ class _ViewDetailsState extends State<ViewDetails> {
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
       child: Card(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16))),
         color: const Color.fromRGBO(40, 59, 113, 1),
         child: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -274,6 +273,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                             date: assetDate.toString(),
                             reference: index['Reference'],
                             round: index['RoundID'].toString(),
+                            imagePath: index['imagePath'].toString(),
                             userCode: userID,
                             userBranch: branchuserID.toString(),
                             backBranch: widget.branchPermission,
@@ -366,6 +366,8 @@ class _ViewDetailsState extends State<ViewDetails> {
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
       child: Card(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16))),
         color: const Color.fromRGBO(40, 59, 113, 1),
         child: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -381,6 +383,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                             date: assetDate.toString(),
                             reference: index['Reference'],
                             round: index['RoundID'].toString(),
+                            imagePath: index['imagePath'].toString(),
                             userCode: userID.toString(),
                             userBranch: branchuserID.toString(),
                             backBranch: widget.branchPermission,
@@ -468,6 +471,8 @@ class _ViewDetailsState extends State<ViewDetails> {
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
       child: Card(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16))),
         color: const Color.fromRGBO(40, 59, 113, 1),
         child: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -481,6 +486,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                             codeAssets: index['Code'],
                             brachID: index['BranchID'],
                             assetID: index['AssetID'],
+                            imagePath: index['imagePath'].toString(),
                             roundID: widget.period_round.toString(),
                           )));
             },

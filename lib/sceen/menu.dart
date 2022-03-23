@@ -160,7 +160,7 @@ class _ScannerState extends State<Scanner> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "ยินดีต้อนรับสู่สาขาที่ " + widget.brachID.toString(),
+                      "กำลังใช้งานเมนูสาขาที่ " + widget.brachID.toString(),
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 24,
@@ -170,9 +170,9 @@ class _ScannerState extends State<Scanner> {
                       height: 4,
                     ),
                     const Text(
-                      "กรุณาเลือกเมนู ",
+                      "กรุณาเลือกเมนู",
                       style: TextStyle(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                           fontSize: 18,
                           color: Color(0xffa29aac)),
                     ),
@@ -184,10 +184,10 @@ class _ScannerState extends State<Scanner> {
           //
           Center(
             child: Padding(
-              padding: const EdgeInsets.only(left: 8, right: 8),
+              padding: const EdgeInsets.only(left: 16, right: 16),
               child: Container(
                 alignment: Alignment.topCenter,
-                padding: const EdgeInsets.only(top: 5, right: 10.0, left: 20.0),
+                padding: const EdgeInsets.only(top: 5),
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
@@ -200,8 +200,14 @@ class _ScannerState extends State<Scanner> {
                       Visibility(
                         visible: _isButtonDisabled,
                         child: Card(
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          margin: const EdgeInsets.symmetric(horizontal: 8.0),
                           elevation: 4.0,
                           child: InkWell(
+                            focusColor: const Color.fromRGBO(40, 59, 113, 1),
+                            hoverColor: const Color.fromRGBO(40, 59, 113, 1),
                             onTap: () {
                               Navigator.push(
                                 context,
@@ -216,33 +222,32 @@ class _ScannerState extends State<Scanner> {
                             splashColor: const Color.fromRGBO(40, 59, 113, 1),
                             child: Container(
                               padding: const EdgeInsets.only(
-                                  top: 15.0, bottom: 15.0, right: 15.0),
+                                  top: 10.0, bottom: 10.0),
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(22.0)),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
-                                  const Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 10.0, right: 20.0),
-                                    child: Icon(
+                                  Container(
+                                    padding: const EdgeInsets.all(16),
+                                    child: const Icon(
                                       Icons.qr_code_2_rounded,
-                                      color: Color.fromRGBO(45, 69, 135, 1),
-                                      size: 40.0,
+                                      color: Color.fromRGBO(40, 59, 113, 1),
+                                      size: 36.0,
                                     ),
                                   ),
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                          CrossAxisAlignment.center,
                                       children: <Widget>[
-                                        Column(
-                                          children: const <Widget>[
-                                            Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                "สแกน Qr code",
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Column(
+                                            children: [
+                                              const Text(
+                                                "สแกน QR CODE",
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
                                                   fontSize: 25.0,
@@ -251,8 +256,15 @@ class _ScannerState extends State<Scanner> {
                                                       40, 59, 113, 1),
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                              const SizedBox(height: 4),
+                                              Text(
+                                                'สแกนเพื่อนับทรัพย์สินสาขา ' +
+                                                    widget.brachID.toString(),
+                                                style: const TextStyle(
+                                                    color: Colors.black38),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -264,11 +276,17 @@ class _ScannerState extends State<Scanner> {
                         ),
                       ),
                       const SizedBox(
-                        height: 10,
+                        height: 16,
                       ),
                       Card(
+                        shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(16))),
+                        margin: const EdgeInsets.symmetric(horizontal: 8.0),
                         elevation: 4.0,
                         child: InkWell(
+                          focusColor: const Color.fromRGBO(40, 59, 113, 1),
+                          hoverColor: const Color.fromRGBO(40, 59, 113, 1),
                           onTap: () {
                             Navigator.push(
                               context,
@@ -281,33 +299,32 @@ class _ScannerState extends State<Scanner> {
                           },
                           splashColor: const Color.fromRGBO(40, 59, 113, 1),
                           child: Container(
-                            padding: const EdgeInsets.only(
-                                top: 15.0, bottom: 15.0, right: 15.0),
+                            padding:
+                                const EdgeInsets.only(top: 10.0, bottom: 10.0),
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(22.0)),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
-                                const Padding(
-                                  padding:
-                                      EdgeInsets.only(left: 10.0, right: 20.0),
-                                  child: Icon(
-                                    Icons.article,
+                                Container(
+                                  padding: const EdgeInsets.all(16),
+                                  child: const Icon(
+                                    Icons.description_rounded,
                                     color: Color.fromRGBO(40, 59, 113, 1),
-                                    size: 40.0,
+                                    size: 34.0,
                                   ),
                                 ),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        CrossAxisAlignment.center,
                                     children: <Widget>[
-                                      Column(
-                                        children: const <Widget>[
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Column(
+                                          children: [
+                                            const Text(
                                               "รายการทรัพย์สิน",
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
@@ -317,8 +334,15 @@ class _ScannerState extends State<Scanner> {
                                                     40, 59, 113, 1),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                            const SizedBox(height: 4),
+                                            Text(
+                                              'แสดงรายงานทรัพย์สินสาขา ' +
+                                                  widget.brachID.toString(),
+                                              style: const TextStyle(
+                                                  color: Colors.black38),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),

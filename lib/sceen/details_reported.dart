@@ -9,6 +9,7 @@ import 'package:snippet_coder_utils/hex_color.dart';
 import 'package:http/http.dart' as http;
 import '../config.dart';
 
+// ignore: must_be_immutable
 class DetailsReported extends StatefulWidget {
   final oCcy = NumberFormat("#,##0.00", "th");
   final String titleName;
@@ -20,6 +21,7 @@ class DetailsReported extends StatefulWidget {
   final String userCode;
   final String userBranch;
   final int backBranch;
+  late String imagePath;
   DetailsReported({
     Key? key,
     required this.titleName,
@@ -31,6 +33,7 @@ class DetailsReported extends StatefulWidget {
     required this.userCode,
     required this.userBranch,
     required this.backBranch,
+    required this.imagePath,
   }) : super(key: key);
   @override
   _DetailsReportedState createState() => _DetailsReportedState();
@@ -45,11 +48,14 @@ class _DetailsReportedState extends State<DetailsReported> {
   String referenceSetState2 = 'รอตัดชำรุด';
   String referenceSetState3 = '';
   bool _visible = false;
-  bool _visible2 = false;
   var titleName = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    if (widget.imagePath == 'null') {
+      widget.imagePath =
+          'http://vpnptec.dyndns.org:10280/OPS_Fileupload/ATT_220300020.png';
+    }
     setState(() {
       titleName.text = widget.titleName;
     });
@@ -262,6 +268,24 @@ class _DetailsReportedState extends State<DetailsReported> {
                     ),
                   ],
                 ),
+                Column(
+                  children: const <Widget>[
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Divider(
+                      color: Colors.white,
+                      thickness: 1,
+                      height: 20,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
+                Center(
+                    child: Image.network(widget.imagePath, fit: BoxFit.cover)),
+                const SizedBox(height: 10),
                 Visibility(
                   visible: _visible,
                   child: Column(
@@ -389,11 +413,13 @@ class _DetailsReportedState extends State<DetailsReported> {
                             });
                           },
                         ),
-                        const Text('รอตัดชำรุด',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600)),
+                        const Text(
+                          'รอตัดชำรุด',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600),
+                        ),
                       ],
                     ),
                   ),

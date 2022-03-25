@@ -435,6 +435,7 @@ class _TestAssetState extends State<TestAsset> {
               ),
             ),
           ),
+          const SizedBox(height: 20),
         ],
       ),
     );
@@ -536,7 +537,8 @@ class _TestAssetState extends State<TestAsset> {
           FormHelper.showSimpleAlertDialog(
               context,
               Config.appName,
-              itemsResponse['message'] + itemsResponse['data'].toString(),
+              itemsResponse['message'].toString() +
+                  itemsResponse['data'].toString(),
               "ยอมรับ", () {
             Navigator.pop(context);
           });

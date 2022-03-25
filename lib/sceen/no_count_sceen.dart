@@ -244,117 +244,96 @@ class _NoCountedSceenState extends State<NoCountedSceen> {
       'Content-Type': 'application/json; charset=utf-8',
     };
     var client = http.Client();
-    var url = Uri.http(Config.apiURL, Config.assetsAPI);
-
-    var response1 = await client.post(
+    var url = Uri.http(Config.apiURL, Config.periodLogin);
+    var response = await client.post(
       url,
       headers: requestHeaders,
       body: jsonEncode({
-        "Code": widget.codeAssets,
-        "UserBranch": widget.brachID,
-        "RoundID": roundid.getString("RoundID")!,
+        "BeginDate": now.toString(),
+        "EndDate": now.toString(),
+        "BranchID": widget.brachID.toInt(),
       }),
     );
-    if (response1.statusCode == 200) {
-      var client = http.Client();
-      var url = Uri.http(Config.apiURL, Config.periodLogin);
-      var response = await client.post(
-        url,
-        headers: requestHeaders,
-        body: jsonEncode({
-          "BeginDate": now.toString(),
-          "EndDate": now.toString(),
-          "BranchID": widget.brachID.toInt(),
-        }),
-      );
-      if (response.statusCode == 200) {
-        var items = jsonDecode(response.body)['PeriodRound'];
-        if (items != widget.roundID) {
+    if (response.statusCode == 200) {
+      var items = jsonDecode(response.body)['PeriodRound'];
+      if (items != widget.roundID) {
+        setState(() {
+          FormHelper.showSimpleAlertDialog(
+              context,
+              Config.appName,
+              "ไม่สามารถบันทึกข้อมูลได้เนื่องจากรอบบันทึกไม่ถูกต้อง",
+              "ยอมรับ", () {
+            Navigator.pop(context);
+          });
+          checkBox2 = false;
+        });
+      } else {
+        var client = http.Client();
+        var url = Uri.http(Config.apiURL, Config.addAssetsAPI);
+        var response = await client.post(
+          url,
+          headers: requestHeaders,
+          body: jsonEncode({
+            "Name": widget.titleName,
+            "Code": widget.codeAssets,
+            "BranchID": widget.brachID.toInt(),
+            "Date": '$now',
+            "Status": status,
+            "UserID": pref.getString("UserID")!,
+            "UserBranch": widget.brachID,
+            "RoundID": roundid.getString("RoundID")!,
+            "Reference": referenceController.text,
+          }),
+        );
+        if (response.statusCode == 200) {
+          final items = jsonDecode(response.body);
+          setState(() {
+            FormHelper.showSimpleAlertDialog(
+                context, Config.appName, items['message'], "ยอมรับ", () {
+              // Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ViewDetails(
+                    period_round: roundid.getString("RoundID")!,
+                    beginDate: now.toString(),
+                    endDate: now.toString(),
+                    branchPermission: widget.brachID,
+                  ),
+                ),
+              );
+            });
+          });
+        } else {
           setState(() {
             FormHelper.showSimpleAlertDialog(
                 context,
                 Config.appName,
-                "ไม่สามารถบันทึกข้อมูลได้เนื่องจากรอบบันทึกไม่ถูกต้อง",
+                'มีการบันทึกทรัพย์สินนี้ ในรอบที่ ' +
+                    roundid.getString("RoundID").toString() +
+                    ' ไปแล้ว',
                 "ยอมรับ", () {
-              Navigator.pop(context);
+              // Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ViewDetails(
+                    period_round: roundid.getString("RoundID")!,
+                    beginDate: now.toString(),
+                    endDate: now.toString(),
+                    branchPermission: widget.brachID,
+                  ),
+                ),
+              );
             });
-            checkBox2 = false;
           });
-        } else {
-          var client = http.Client();
-          var url = Uri.http(Config.apiURL, Config.addAssetsAPI);
-          var response = await client.post(
-            url,
-            headers: requestHeaders,
-            body: jsonEncode({
-              "Name": widget.titleName,
-              "Code": widget.codeAssets,
-              "BranchID": widget.brachID.toInt(),
-              "Date": '$now',
-              "Status": status,
-              "UserID": pref.getString("UserID")!,
-              "UserBranch": widget.brachID,
-              "RoundID": roundid.getString("RoundID")!,
-              "Reference": referenceController.text,
-            }),
-          );
-          if (response.statusCode == 200) {
-            final items = jsonDecode(response.body);
-            setState(() {
-              FormHelper.showSimpleAlertDialog(
-                  context, Config.appName, items['message'], "ยอมรับ", () {
-                // Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => ViewDetails(
-                      period_round: roundid.getString("RoundID")!,
-                      beginDate: now.toString(),
-                      endDate: now.toString(),
-                      branchPermission: widget.brachID,
-                    ),
-                  ),
-                );
-              });
-            });
-          } else {
-            setState(() {
-              FormHelper.showSimpleAlertDialog(
-                  context,
-                  Config.appName,
-                  'มีการบันทึกทรัพย์สินนี้ ในรอบที่ ' +
-                      roundid.getString("RoundID").toString() +
-                      ' ไปแล้ว',
-                  "ยอมรับ", () {
-                // Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => ViewDetails(
-                      period_round: roundid.getString("RoundID")!,
-                      beginDate: now.toString(),
-                      endDate: now.toString(),
-                      branchPermission: widget.brachID,
-                    ),
-                  ),
-                );
-              });
-            });
-          }
         }
-      } else {
-        setState(() {
-          var items = jsonDecode(response.body)['data'];
-          FormHelper.showSimpleAlertDialog(context, Config.appName,
-              "ไม่สามารถบันทึกข้อมูลได้เนื่องจาก $items", "ยอมรับ", () {
-            Navigator.pop(context);
-          });
-        });
       }
     } else {
       setState(() {
-        FormHelper.showSimpleAlertDialog(
-            context, Config.appName, "ไม่สามารถบันทึกข้อมูลได้", "ยอมรับ", () {
+        var items = jsonDecode(response.body)['data'];
+        FormHelper.showSimpleAlertDialog(context, Config.appName,
+            "ไม่สามารถบันทึกข้อมูลได้เนื่องจาก $items", "ยอมรับ", () {
           Navigator.pop(context);
         });
       });

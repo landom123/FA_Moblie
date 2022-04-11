@@ -5,7 +5,7 @@ class Config {
   // static const String appAssets = "Assets";
   // static const String apiURL = "192.168.220.1:8080"; //Ipconfig
   static const String apiURL = "49.0.64.71:32001";
-  static const String loginAPI = "/api/login"; //login
+  static const String loginAPI = "/api/login"; //logins
   static const String profileAPI = "/api/users/:body"; //profile
   static const String assetsAPI = "/api/getAsset"; //CheckCode
   static const String assetsAPIByUserID =

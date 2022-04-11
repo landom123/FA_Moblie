@@ -166,15 +166,15 @@ class _ScannerState extends State<Scanner> {
                           fontSize: 24,
                           color: Colors.white),
                     ),
-                    const SizedBox(
-                      height: 4,
-                    ),
                     const Text(
                       "กรุณาเลือกเมนู",
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 18,
                           color: Color(0xffa29aac)),
+                    ),
+                    const SizedBox(
+                      height: 4,
                     ),
                   ],
                 ),
@@ -234,7 +234,7 @@ class _ScannerState extends State<Scanner> {
                                     child: const Icon(
                                       Icons.qr_code_2_rounded,
                                       color: Color.fromRGBO(40, 59, 113, 1),
-                                      size: 36.0,
+                                      size: 40.0,
                                     ),
                                   ),
                                   Expanded(
@@ -246,6 +246,13 @@ class _ScannerState extends State<Scanner> {
                                           alignment: Alignment.centerLeft,
                                           child: Column(
                                             children: [
+                                              Text(
+                                                'สแกนเพื่อนับทรัพย์สินสาขา ' +
+                                                    widget.brachID.toString(),
+                                                style: const TextStyle(
+                                                    color: Colors.black38),
+                                              ),
+                                              const SizedBox(height: 4),
                                               const Text(
                                                 "สแกน QR CODE",
                                                 textAlign: TextAlign.left,
@@ -255,13 +262,6 @@ class _ScannerState extends State<Scanner> {
                                                   color: Color.fromRGBO(
                                                       40, 59, 113, 1),
                                                 ),
-                                              ),
-                                              const SizedBox(height: 4),
-                                              Text(
-                                                'สแกนเพื่อนับทรัพย์สินสาขา ' +
-                                                    widget.brachID.toString(),
-                                                style: const TextStyle(
-                                                    color: Colors.black38),
                                               ),
                                             ],
                                           ),
@@ -312,7 +312,7 @@ class _ScannerState extends State<Scanner> {
                                   child: const Icon(
                                     Icons.description_rounded,
                                     color: Color.fromRGBO(40, 59, 113, 1),
-                                    size: 34.0,
+                                    size: 38.0,
                                   ),
                                 ),
                                 Expanded(
@@ -324,6 +324,13 @@ class _ScannerState extends State<Scanner> {
                                         alignment: Alignment.centerLeft,
                                         child: Column(
                                           children: [
+                                            Text(
+                                              'แสดงรายงานทรัพย์สินสาขา ' +
+                                                  widget.brachID.toString(),
+                                              style: const TextStyle(
+                                                  color: Colors.black38),
+                                            ),
+                                            const SizedBox(height: 4),
                                             const Text(
                                               "รายการทรัพย์สิน",
                                               textAlign: TextAlign.left,
@@ -333,13 +340,6 @@ class _ScannerState extends State<Scanner> {
                                                 color: Color.fromRGBO(
                                                     40, 59, 113, 1),
                                               ),
-                                            ),
-                                            const SizedBox(height: 4),
-                                            Text(
-                                              'แสดงรายงานทรัพย์สินสาขา ' +
-                                                  widget.brachID.toString(),
-                                              style: const TextStyle(
-                                                  color: Colors.black38),
                                             ),
                                           ],
                                         ),

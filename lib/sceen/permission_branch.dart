@@ -256,6 +256,11 @@ class _PermissionBranchState extends State<PermissionBranch> {
                                         alignment: Alignment.centerLeft,
                                         child: Column(
                                           children: [
+                                            const Text(
+                                              'เลือกสาขาเพื่อระบุสาขาของเมนูถัดไป',
+                                              style: TextStyle(
+                                                  color: Colors.black38),
+                                            ),
                                             DropdownButton(
                                               icon: const Icon(
                                                   Icons.arrow_drop_down),
@@ -308,11 +313,6 @@ class _PermissionBranchState extends State<PermissionBranch> {
                                               },
                                               value: _mySelection,
                                             ),
-                                            const Text(
-                                              'เลือกสาขาเพื่อระบุสาขาของเมนูถัดไป',
-                                              style: TextStyle(
-                                                  color: Colors.black38),
-                                            ),
                                             const SizedBox(height: 6),
                                           ],
                                         ),
@@ -355,7 +355,7 @@ class _PermissionBranchState extends State<PermissionBranch> {
                                     child: const Icon(
                                       Icons.document_scanner,
                                       color: Color.fromRGBO(40, 59, 113, 1),
-                                      size: 30.0,
+                                      size: 32.0,
                                     ),
                                   ),
                                   Expanded(
@@ -368,6 +368,12 @@ class _PermissionBranchState extends State<PermissionBranch> {
                                           child: Column(
                                             children: const [
                                               Text(
+                                                'สแกนเพื่อตรวจสอบข้อมูลทรัพย์สิน',
+                                                style: TextStyle(
+                                                    color: Colors.black38),
+                                              ),
+                                              SizedBox(height: 4),
+                                              Text(
                                                 "ตรวจสอบ Qr Code",
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
@@ -376,12 +382,6 @@ class _PermissionBranchState extends State<PermissionBranch> {
                                                   color: Color.fromRGBO(
                                                       40, 59, 113, 1),
                                                 ),
-                                              ),
-                                              SizedBox(height: 4),
-                                              Text(
-                                                'สแกนเพื่อตรวจสอบข้อมูลทรัพย์สิน',
-                                                style: TextStyle(
-                                                    color: Colors.black38),
                                               ),
                                             ],
                                           ),
@@ -443,8 +443,13 @@ class _PermissionBranchState extends State<PermissionBranch> {
           );
         });
       } else {
+        dynamic itemsResponse = jsonDecode(response.body);
         FormHelper.showSimpleAlertDialog(
-            context, Config.appName, "ไม่พบ Code นี้ในระบบ", "OK", () {
+            context,
+            Config.appName,
+            itemsResponse['message'].toString() +
+                itemsResponse['data'].toString(),
+            "ยอมรับ", () {
           Navigator.pop(context);
         });
       }

@@ -116,21 +116,13 @@ class _NoCountedSceenState extends State<NoCountedSceen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextField(
-                readOnly: true,
-                controller: titleName,
+              Text(
+                widget.codeAssets,
                 style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  errorBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                ),
+                    fontWeight: FontWeight.w600,
+                    //fontStyle: FontStyle.italic,
+                    fontSize: 28,
+                    color: Colors.white),
               ),
               const SizedBox(
                 height: 10,
@@ -144,7 +136,7 @@ class _NoCountedSceenState extends State<NoCountedSceen> {
                 height: 10,
               ),
               Text(
-                'Code :  ' + widget.codeAssets,
+                widget.titleName,
                 style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     //fontStyle: FontStyle.italic,

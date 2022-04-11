@@ -1,4 +1,4 @@
-package com.example.new_flutter_test
+package com.purethai.fa_counting_test
 
 import io.flutter.embedding.android.FlutterActivity
 

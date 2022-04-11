@@ -397,7 +397,7 @@ class _TestAssetState extends State<TestAsset> {
                           child: const Icon(
                             Icons.qr_code_2_rounded,
                             color: Color.fromRGBO(40, 59, 113, 1),
-                            size: 35.0,
+                            size: 40.0,
                           ),
                         ),
                         Expanded(
@@ -409,6 +409,11 @@ class _TestAssetState extends State<TestAsset> {
                                 child: Column(
                                   children: const [
                                     Text(
+                                      'สแกนนับทรัพย์สินและการทำบันทึก',
+                                      style: TextStyle(color: Colors.black38),
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
                                       "สแกน QR CODE",
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
@@ -416,11 +421,6 @@ class _TestAssetState extends State<TestAsset> {
                                         fontWeight: FontWeight.bold,
                                         color: Color.fromRGBO(40, 59, 113, 1),
                                       ),
-                                    ),
-                                    SizedBox(height: 4),
-                                    Text(
-                                      'สแกนนับทรัพย์สินและการทำบันทึก',
-                                      style: TextStyle(color: Colors.black38),
                                     ),
                                   ],
                                 ),

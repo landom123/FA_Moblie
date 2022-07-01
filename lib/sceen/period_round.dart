@@ -53,7 +53,10 @@ class _PeriodRoundState extends State<PeriodRound> {
       appBar: AppBar(
         title: const Text(
           'Periods',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+          ),
         ),
         leading: Row(
           children: <Widget>[
@@ -141,32 +144,32 @@ class _PeriodRoundState extends State<PeriodRound> {
                   children: <Widget>[
                     SizedBox(
                       width: 280,
-                      child: Text('เปิดสำหรับ: $description',
+                      child: Text('$description',
                           style: const TextStyle(
                               fontSize: 18,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                               color: Colors.white)),
                     ),
                     const SizedBox(height: 8),
                     SizedBox(
                       width: 280,
-                      child: Text('รอบที่ทำการบันทึก: $period_round',
+                      child: Text('รอบที่บันทึก : รอบที่ $period_round',
                           style: const TextStyle(
                               fontSize: 14,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                               color: Colors.white)),
                     ),
                     const SizedBox(height: 8),
                     Text('เวลา : $period_dateBegin - $period_dateEnd',
                         style: const TextStyle(
                             fontSize: 14,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w500,
                             color: Colors.yellow)),
                     // const SizedBox(height: 8),
                     // Text('การเปิดให้บันทึกเฉพาะสาขา : ' + branchID.toString(),
                     //     style: const TextStyle(
                     //         fontSize: 14,
-                    //         fontWeight: FontWeight.w600,
+                    //         fontWeight: FontWeight.w500,
                     //         color: Colors.orangeAccent)),
                   ],
                 ),

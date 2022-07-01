@@ -162,7 +162,7 @@ class _ScannerState extends State<Scanner> {
                     Text(
                       "กำลังใช้งานเมนูสาขาที่ " + widget.brachID.toString(),
                       style: const TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w500,
                           fontSize: 24,
                           color: Colors.white),
                     ),
@@ -250,7 +250,9 @@ class _ScannerState extends State<Scanner> {
                                                 'สแกนเพื่อนับทรัพย์สินสาขา ' +
                                                     widget.brachID.toString(),
                                                 style: const TextStyle(
-                                                    color: Colors.black38),
+                                                  color: Colors.black38,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
                                               ),
                                               const SizedBox(height: 4),
                                               const Text(
@@ -258,7 +260,7 @@ class _ScannerState extends State<Scanner> {
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
                                                   fontSize: 25.0,
-                                                  fontWeight: FontWeight.bold,
+                                                  fontWeight: FontWeight.w500,
                                                   color: Color.fromRGBO(
                                                       40, 59, 113, 1),
                                                 ),
@@ -328,7 +330,9 @@ class _ScannerState extends State<Scanner> {
                                               'แสดงรายงานทรัพย์สินสาขา ' +
                                                   widget.brachID.toString(),
                                               style: const TextStyle(
-                                                  color: Colors.black38),
+                                                color: Colors.black38,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
                                             const SizedBox(height: 4),
                                             const Text(
@@ -336,7 +340,7 @@ class _ScannerState extends State<Scanner> {
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontSize: 25.0,
-                                                fontWeight: FontWeight.bold,
+                                                fontWeight: FontWeight.w500,
                                                 color: Color.fromRGBO(
                                                     40, 59, 113, 1),
                                               ),

@@ -37,10 +37,12 @@ class _TestAssetState extends State<TestAsset> {
   int statusController = 1;
   var assetIDController = TextEditingController();
   var referenceController = TextEditingController();
-  String referenceSetState1 = "ชำรุดรอซ่อม";
-  String referenceSetState2 = "รอตัดชำรุด";
-  bool checkBox = false;
+  String referenceSetState1 = "สภาพดี";
+  String referenceSetState2 = "ชำรุดรอซ่อม";
+  String referenceSetState3 = "รอตัดชำรุด";
+  bool checkBox1 = false;
   bool checkBox2 = false;
+  bool checkBox3 = false;
   String? moneyController;
   String? userID;
   int? userBranch;
@@ -157,7 +159,7 @@ class _TestAssetState extends State<TestAsset> {
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 24.0,
-                      fontWeight: FontWeight.bold),
+                      fontWeight: FontWeight.w500),
                 ),
               ),
               SizedBox(height: 4),
@@ -233,9 +235,10 @@ class _TestAssetState extends State<TestAsset> {
                     padding: const EdgeInsets.only(left: 25, right: 25),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         SizedBox(
-                          width: 110,
+                          width: MediaQuery.of(context).size.width / 3,
                           child: TextField(
                             readOnly: true,
                             textAlign: TextAlign.center,
@@ -259,7 +262,7 @@ class _TestAssetState extends State<TestAsset> {
                         ),
                         const SizedBox(width: 10),
                         SizedBox(
-                          width: 190,
+                          width: MediaQuery.of(context).size.width / 2,
                           child: TextField(
                             readOnly: true,
                             textAlign: TextAlign.center,
@@ -287,85 +290,126 @@ class _TestAssetState extends State<TestAsset> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Visibility(
-                        visible: _visible,
-                        child: Theme(
-                          data: Theme.of(context)
-                              .copyWith(unselectedWidgetColor: Colors.white),
-                          child: Row(
-                            children: [
-                              Checkbox(
-                                value: checkBox,
-                                splashRadius: 30,
-                                activeColor: Colors.orangeAccent,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                onChanged: (value) {
-                                  setState(() {
-                                    checkBox = value!;
-                                    if (checkBox == false) {
-                                      referenceController.clear();
-                                      update();
-                                    } else {
-                                      checkBox2 = false;
-                                      referenceController.text =
-                                          referenceSetState1.toString();
-                                      update();
-                                    }
-                                  });
-                                },
-                              ),
-                              const Text('ชำรุดรอซ่อม',
+                Visibility(
+                    visible: _visible,
+                    child: Padding(
+                        padding: const EdgeInsets.only(left: 20.0),
+                        child: Column(children: [
+                          Theme(
+                            data: Theme.of(context)
+                                .copyWith(unselectedWidgetColor: Colors.white),
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                  value: checkBox1,
+                                  splashRadius: 30,
+                                  activeColor: Colors.orangeAccent,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      checkBox1 = value!;
+                                      if (checkBox1 == false) {
+                                        referenceController.clear();
+                                        update();
+                                      } else {
+                                        checkBox2 = false;
+                                        checkBox3 = false;
+                                        referenceController.text =
+                                            referenceSetState1.toString();
+                                        update();
+                                      }
+                                    });
+                                  },
+                                ),
+                                const Text(
+                                  'สภาพดี',
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 18)),
-                            ],
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Visibility(
-                        visible: _visible,
-                        child: Theme(
-                          data: Theme.of(context)
-                              .copyWith(unselectedWidgetColor: Colors.white),
-                          child: Row(
-                            children: [
-                              Checkbox(
-                                value: checkBox2,
-                                splashRadius: 30,
-                                activeColor: Colors.orangeAccent,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                onChanged: (value) {
-                                  setState(() {
-                                    checkBox2 = value!;
-                                    if (checkBox2 == false) {
-                                      referenceController.clear();
-                                      update();
-                                    } else {
-                                      checkBox = false;
-                                      referenceController.text =
-                                          referenceSetState2.toString();
-                                      update();
-                                    }
-                                  });
-                                },
-                              ),
-                              const Text('รอตัดชำรุด',
+                          Theme(
+                            data: Theme.of(context)
+                                .copyWith(unselectedWidgetColor: Colors.white),
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                  value: checkBox2,
+                                  splashRadius: 30,
+                                  activeColor: Colors.orangeAccent,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      checkBox2 = value!;
+                                      if (checkBox2 == false) {
+                                        referenceController.clear();
+                                        update();
+                                      } else {
+                                        checkBox1 = false;
+                                        checkBox3 = false;
+                                        referenceController.text =
+                                            referenceSetState2.toString();
+                                        update();
+                                      }
+                                    });
+                                  },
+                                ),
+                                const Text(
+                                  'รอตัดชำรุด',
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 18)),
-                            ],
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                          Theme(
+                              data: Theme.of(context).copyWith(
+                                  unselectedWidgetColor: Colors.white),
+                              child: Row(
+                                children: [
+                                  Checkbox(
+                                    value: checkBox3,
+                                    splashRadius: 30,
+                                    activeColor: Colors.orangeAccent,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        checkBox3 = value!;
+                                        if (checkBox3 == false) {
+                                          referenceController.clear();
+                                          update();
+                                        } else {
+                                          checkBox1 = false;
+                                          checkBox2 = false;
+                                          referenceController.text =
+                                              referenceSetState3.toString();
+                                          update();
+                                        }
+                                      });
+                                    },
+                                  ),
+                                  const Text(
+                                    'ชำรุดรอซ่อม',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ))
+                        ])))
               ],
             ),
           ),
@@ -418,7 +462,7 @@ class _TestAssetState extends State<TestAsset> {
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                         fontSize: 28.0,
-                                        fontWeight: FontWeight.bold,
+                                        fontWeight: FontWeight.w500,
                                         color: Color.fromRGBO(40, 59, 113, 1),
                                       ),
                                     ),
@@ -479,7 +523,7 @@ class _TestAssetState extends State<TestAsset> {
             userID = pref.getString("UserID")!;
             userBranchID = pref.getInt("BranchID")!;
             round_id.text = roundid.getString("RoundID")!;
-            referenceController.text = "";
+            referenceController.text = "ไม่ได้ระบุสถานะ";
           });
           if (codeController.text.isNotEmpty &&
               nameController.text.isNotEmpty &&
@@ -568,10 +612,16 @@ class _TestAssetState extends State<TestAsset> {
         "RoundID": round_id.text,
         "Reference": referenceController.text,
         "UserID": userID,
+        "Date": now.toString(),
       }),
     );
     // print(response.body);
     if (response.statusCode == 200) {
+      setState(() {
+        checkBox1 = false;
+        checkBox2 = false;
+        checkBox3 = false;
+      });
       _visible = false;
       _visibleRead = false;
       dynamic itemsResponse = jsonDecode(response.body);

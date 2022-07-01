@@ -109,7 +109,10 @@ class _PermissionBranchState extends State<PermissionBranch> {
                 userBranch.toString() +
                 ')',
             style: const TextStyle(
-                fontSize: 18, color: Color.fromRGBO(40, 59, 113, 1)),
+              fontSize: 14,
+              color: Color.fromRGBO(40, 59, 113, 1),
+              fontWeight: FontWeight.w500,
+            ),
           ),
           elevation: 0,
           backgroundColor: Colors.white,
@@ -189,7 +192,7 @@ class _PermissionBranchState extends State<PermissionBranch> {
                     Text(
                       "ยินดีต้อนรับสู่ แอปพลิเคชัน",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w500,
                           fontSize: 24,
                           color: Colors.white),
                     ),
@@ -259,7 +262,9 @@ class _PermissionBranchState extends State<PermissionBranch> {
                                             const Text(
                                               'เลือกสาขาเพื่อระบุสาขาของเมนูถัดไป',
                                               style: TextStyle(
-                                                  color: Colors.black38),
+                                                color: Colors.black38,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
                                             DropdownButton(
                                               icon: const Icon(
@@ -270,7 +275,7 @@ class _PermissionBranchState extends State<PermissionBranch> {
                                                 'กรุณาเลือกสาขา',
                                                 style: TextStyle(
                                                   fontSize: 25.0,
-                                                  fontWeight: FontWeight.bold,
+                                                  fontWeight: FontWeight.w500,
                                                   color: Color.fromRGBO(
                                                       40, 59, 113, 1),
                                                 ),
@@ -279,11 +284,13 @@ class _PermissionBranchState extends State<PermissionBranch> {
                                                   permission_branch.map((item) {
                                                 return DropdownMenuItem(
                                                   child: Text(
-                                                    item['BranchID'].toString(),
+                                                    'สาขาที่ ' +
+                                                        item['BranchID']
+                                                            .toString(),
                                                     style: const TextStyle(
                                                       fontSize: 25.0,
                                                       fontWeight:
-                                                          FontWeight.bold,
+                                                          FontWeight.w500,
                                                       color: Color.fromRGBO(
                                                           40, 59, 113, 1),
                                                     ),
@@ -370,7 +377,9 @@ class _PermissionBranchState extends State<PermissionBranch> {
                                               Text(
                                                 'สแกนเพื่อตรวจสอบข้อมูลทรัพย์สิน',
                                                 style: TextStyle(
-                                                    color: Colors.black38),
+                                                  color: Colors.black38,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
                                               ),
                                               SizedBox(height: 4),
                                               Text(
@@ -378,7 +387,7 @@ class _PermissionBranchState extends State<PermissionBranch> {
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
                                                   fontSize: 25.0,
-                                                  fontWeight: FontWeight.bold,
+                                                  fontWeight: FontWeight.w500,
                                                   color: Color.fromRGBO(
                                                       40, 59, 113, 1),
                                                 ),

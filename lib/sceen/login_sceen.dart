@@ -27,14 +27,21 @@ class _LohinSceenState extends State<LohinSceen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                'Version 1.0.2 (2022-30-06)',
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.black.withOpacity(0.6),
+                    fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
           centerTitle: true,
           elevation: 0,
           backgroundColor: Colors.white,
-          leading: Row(children: const <Widget>[
-            SizedBox(
-              width: 5.0,
-            ),
-          ]),
         ),
         backgroundColor: HexColor('#283B71'),
         body: ProgressHUD(
@@ -92,7 +99,7 @@ class _LohinSceenState extends State<LohinSceen> {
             child: Text(
               "ล็อกอินเพื่อเข้าสู่ระบบ",
               style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w500,
                   //fontStyle: FontStyle.italic,
                   fontSize: 24,
                   color: Colors.white),
@@ -163,6 +170,7 @@ class _LohinSceenState extends State<LohinSceen> {
               child: RichText(
                 text: TextSpan(
                   style: TextStyle(
+                    fontWeight: FontWeight.w500,
                     color: Colors.grey.withOpacity(0.6),
                     fontSize: 16.0,
                   ),
@@ -212,7 +220,7 @@ class _LohinSceenState extends State<LohinSceen> {
                 borderColor: Colors.white.withOpacity(0.5),
                 borderRadius: 10,
                 txtColor: Colors.white,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w500,
                 fontSize: 18,
               ),
             ),
@@ -228,7 +236,7 @@ class _LohinSceenState extends State<LohinSceen> {
                 Text(
                   'จำรหัสผ่านไม่ได้ ? กรุณาติดต่อ',
                   style: TextStyle(
-                      color: Colors.grey[600], fontWeight: FontWeight.w400),
+                      color: Colors.grey[600], fontWeight: FontWeight.w500),
                 ),
                 FlatButton(
                   onPressed: () {},

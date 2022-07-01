@@ -193,7 +193,7 @@ class _ViewDetailsState extends State<ViewDetails> {
             ),
             title: Text(
               'ทรัพย์สิน สาขาที่ : ' + widget.branchPermission.toString(),
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.w500),
             ),
             leading: Row(children: <Widget>[
               const SizedBox(
@@ -290,14 +290,14 @@ class _ViewDetailsState extends State<ViewDetails> {
                       child: Text('$titleName',
                           style: const TextStyle(
                               fontSize: 16,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                               color: Color.fromRGBO(13, 209, 13, 1))),
                     ),
                     const SizedBox(height: 8),
                     Text('Code: $codeAssets',
                         style: const TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w500,
                             color: Colors.yellow)),
                     const SizedBox(height: 8),
                     Row(
@@ -309,30 +309,19 @@ class _ViewDetailsState extends State<ViewDetails> {
                                 fontWeight: FontWeight.w500,
                                 color: Colors.white)),
                         const SizedBox(width: 10),
-                        const Text('ชื่อย่อ: Null',
-                            style: TextStyle(
+                        Text('รอบบันทึก : รอบที่ $roundID',
+                            style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.white))
                       ],
                     ),
                     const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('วันที่บันทึก: $assetDate',
-                            style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white)),
-                        const SizedBox(width: 10),
-                        Text('(รอบที่ $roundID)',
-                            style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white))
-                      ],
-                    ),
+                    Text('วันที่บันทึก: $assetDate',
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white)),
                   ],
                 ),
               ],
@@ -400,14 +389,14 @@ class _ViewDetailsState extends State<ViewDetails> {
                       child: Text('$titleName',
                           style: const TextStyle(
                               fontSize: 16,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                               color: Color.fromRGBO(13, 209, 13, 1))),
                     ),
                     const SizedBox(height: 8),
                     Text('Code: $codeAssets',
                         style: const TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w500,
                             color: Colors.yellow)),
                     const SizedBox(height: 8),
                     Row(
@@ -419,30 +408,19 @@ class _ViewDetailsState extends State<ViewDetails> {
                                 fontWeight: FontWeight.w500,
                                 color: Colors.white)),
                         const SizedBox(width: 10),
-                        const Text('ชื่อย่อ: Null',
-                            style: TextStyle(
+                        Text('รอบบันทึก : รอบที่ $roundID',
+                            style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.white))
                       ],
                     ),
                     const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('วันที่บันทึก: $assetDate',
-                            style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white)),
-                        const SizedBox(width: 10),
-                        Text('(รอบที่ $roundID)',
-                            style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white))
-                      ],
-                    ),
+                    Text('วันที่บันทึก: $assetDate',
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white)),
                   ],
                 ),
               ],
@@ -501,32 +479,21 @@ class _ViewDetailsState extends State<ViewDetails> {
                       child: Text('$titleName',
                           style: const TextStyle(
                               fontSize: 16,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                               color: Color.fromRGBO(13, 209, 13, 1))),
                     ),
                     const SizedBox(height: 8),
                     Text('Code: $codeAssets',
                         style: const TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w500,
                             color: Colors.yellow)),
                     const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text('สาขา: $brachID',
-                            style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white)),
-                        const SizedBox(width: 10),
-                        const Text('ชื่อย่อ : Null',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white)),
-                      ],
-                    ),
+                    Text('สาขา: $brachID',
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white)),
                   ],
                 ),
               ],

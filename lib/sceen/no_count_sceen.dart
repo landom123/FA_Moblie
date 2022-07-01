@@ -32,19 +32,18 @@ class NoCountedSceen extends StatefulWidget {
 }
 
 class _NoCountedSceenState extends State<NoCountedSceen> {
-  bool checkBox = false;
+  bool checkBox1 = false;
   bool checkBox2 = false;
+  bool checkBox3 = false;
   var referenceController = TextEditingController();
-  String referenceSetState2 = 'QR Code ไม่สมบูรณ์';
+  String referenceSetState1 = 'QR Code ไม่สมบูรณ์ (สภาพดี)';
+  String referenceSetState2 = 'QR Code ไม่สมบูรณ์ (ชำรุดรอซ่อม)';
+  String referenceSetState3 = 'QR Code ไม่สมบูรณ์ (รอตัดชำรุด)';
   final now = DateTime.now();
   final int status = 1;
   var titleName = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    if (widget.imagePath == 'null') {
-      widget.imagePath =
-          'http://vpnptec.dyndns.org:10280/OPS_Fileupload/ATT_220300020.png';
-    }
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 60,
@@ -78,154 +77,224 @@ class _NoCountedSceenState extends State<NoCountedSceen> {
       titleName.text = widget.titleName;
     });
     return SingleChildScrollView(
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
-          Widget>[
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height / 3.8,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Colors.white, Colors.white]),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(100),
-              bottomRight: Radius.circular(100),
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Align(
-                alignment: Alignment.center,
-                child: Image.asset(
-                  "assets/images/purethai.png",
-                  width: 250,
-                  height: 180,
-                  fit: BoxFit.contain,
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height / 3.8,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Colors.white, Colors.white]),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(100),
+                  bottomRight: Radius.circular(100),
                 ),
               ),
-            ],
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 35, top: 30, right: 25),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.codeAssets,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    //fontStyle: FontStyle.italic,
-                    fontSize: 28,
-                    color: Colors.white),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Divider(
-                color: Colors.white,
-                thickness: 1,
-                height: 20,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                widget.titleName,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    //fontStyle: FontStyle.italic,
-                    fontSize: 18,
-                    color: Colors.white),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                'สาขาที่อยู่ของทรัพย์สิน :  ' + widget.brachID.toString(),
-                style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    //fontStyle: FontStyle.italic,
-                    fontSize: 18,
-                    color: Colors.white),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                'ชื่อย่อ :',
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    //fontStyle: FontStyle.italic,
-                    fontSize: 18,
-                    color: Colors.white),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Divider(
-                color: Colors.white,
-                thickness: 1,
-                height: 20,
-              ),
-              Center(child: Image.network(widget.imagePath, fit: BoxFit.cover)),
-              const SizedBox(height: 10),
-              const Divider(
-                color: Colors.white,
-                thickness: 1,
-                height: 20,
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 20, right: 25),
-          child: Column(
-            children: [
-              Theme(
-                data: Theme.of(context)
-                    .copyWith(unselectedWidgetColor: Colors.white),
-                child: Row(
-                  children: [
-                    Checkbox(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      value: checkBox2,
-                      activeColor: Colors.orangeAccent,
-                      splashRadius: 30,
-                      onChanged: (value) {
-                        setState(() {
-                          checkBox2 = value!;
-                          if (checkBox2 == false) {
-                            referenceController.clear();
-                            _createupdate();
-                          } else {
-                            checkBox = false;
-                            referenceController.text =
-                                referenceSetState2.toString();
-                            _createupdate();
-                          }
-                        });
-                      },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: Image.asset(
+                      "assets/images/purethai.png",
+                      width: 250,
+                      height: 180,
+                      fit: BoxFit.contain,
                     ),
-                    const Text('QR Code ไม่สมบูรณ์',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600)),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        )
-      ]),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 35, top: 30, right: 25),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.codeAssets,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        //fontStyle: FontStyle.italic,
+                        fontSize: 28,
+                        color: Colors.white),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Divider(
+                    color: Colors.white,
+                    thickness: 1,
+                    height: 20,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    widget.titleName,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        //fontStyle: FontStyle.italic,
+                        fontSize: 18,
+                        color: Colors.white),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'สาขาที่อยู่ของทรัพย์สิน :  ' + widget.brachID.toString(),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        //fontStyle: FontStyle.italic,
+                        fontSize: 18,
+                        color: Colors.white),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Divider(
+                    color: Colors.white,
+                    thickness: 1,
+                    height: 20,
+                  ),
+                  Center(
+                    child: widget.imagePath == 'null'
+                        ? Image.asset(
+                            "assets/images/ATT_220300020.png",
+                            width: 250,
+                            height: 180,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.network(widget.imagePath, fit: BoxFit.cover),
+                  ),
+                  const SizedBox(height: 10),
+                  const Divider(
+                    color: Colors.white,
+                    thickness: 1,
+                    height: 20,
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 25),
+              child: Column(
+                children: [
+                  Theme(
+                    data: Theme.of(context)
+                        .copyWith(unselectedWidgetColor: Colors.white),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Checkbox(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              value: checkBox1,
+                              activeColor: Colors.orangeAccent,
+                              splashRadius: 30,
+                              onChanged: (value) {
+                                setState(() {
+                                  checkBox1 = value!;
+                                  if (checkBox1 == false) {
+                                    referenceController.clear();
+                                    _createupdate();
+                                  } else {
+                                    checkBox2 = false;
+                                    checkBox3 = false;
+                                    referenceController.text =
+                                        referenceSetState1.toString();
+                                    _createupdate();
+                                  }
+                                });
+                              },
+                            ),
+                            const Text('QR Code ไม่สมบูรณ์ (สภาพดี)',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500)),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Checkbox(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              value: checkBox2,
+                              activeColor: Colors.orangeAccent,
+                              splashRadius: 30,
+                              onChanged: (value) {
+                                setState(() {
+                                  checkBox2 = value!;
+                                  if (checkBox2 == false) {
+                                    referenceController.clear();
+                                    _createupdate();
+                                  } else {
+                                    checkBox1 = false;
+                                    checkBox3 = false;
+                                    referenceController.text =
+                                        referenceSetState2.toString();
+                                    _createupdate();
+                                  }
+                                });
+                              },
+                            ),
+                            const Text(
+                              'QR Code ไม่สมบูรณ์ (ชำรุดรอซ่อม)',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Checkbox(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              value: checkBox3,
+                              activeColor: Colors.orangeAccent,
+                              splashRadius: 30,
+                              onChanged: (value) {
+                                setState(() {
+                                  checkBox3 = value!;
+                                  if (checkBox3 == false) {
+                                    referenceController.clear();
+                                    _createupdate();
+                                  } else {
+                                    checkBox1 = false;
+                                    checkBox2 = false;
+                                    referenceController.text =
+                                        referenceSetState3.toString();
+                                    _createupdate();
+                                  }
+                                });
+                              },
+                            ),
+                            const Text('QR Code ไม่สมบูรณ์ (รอตัดชำรุด)',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ]),
     );
   }
 

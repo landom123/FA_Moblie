@@ -64,10 +64,6 @@ class _CheckCodeState extends State<CheckCode> {
   }
 
   Widget assetsReported() {
-    if (widget.images == 'null') {
-      widget.images =
-          'http://vpnptec.dyndns.org:10280/OPS_Fileupload/ATT_220300020.png';
-    }
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,7 +110,7 @@ class _CheckCodeState extends State<CheckCode> {
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 30,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w500,
                   ),
                   decoration: const InputDecoration(
                     border: InputBorder.none,
@@ -138,7 +134,7 @@ class _CheckCodeState extends State<CheckCode> {
                 Text(
                   'Code :  ' + widget.codeAssets,
                   style: const TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       //fontStyle: FontStyle.italic,
                       fontSize: 18,
                       color: Colors.white),
@@ -149,18 +145,7 @@ class _CheckCodeState extends State<CheckCode> {
                 Text(
                   'สาขาที่อยู่ของทรัพย์สิน :  ' + widget.brachID.toString(),
                   style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      //fontStyle: FontStyle.italic,
-                      fontSize: 18,
-                      color: Colors.white),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text(
-                  'ชื่อย่อ :',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       //fontStyle: FontStyle.italic,
                       fontSize: 18,
                       color: Colors.white),
@@ -179,7 +164,16 @@ class _CheckCodeState extends State<CheckCode> {
                 const SizedBox(
                   height: 10,
                 ),
-                Center(child: Image.network(widget.images, fit: BoxFit.cover)),
+                Center(
+                  child: widget.images == 'null'
+                      ? Image.asset(
+                          "assets/images/ATT_220300020.png",
+                          width: 250,
+                          height: 180,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.network(widget.images, fit: BoxFit.cover),
+                ),
                 const SizedBox(height: 10),
               ],
             ),

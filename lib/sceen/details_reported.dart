@@ -46,16 +46,13 @@ class _DetailsReportedState extends State<DetailsReported> {
   var referenceController = TextEditingController();
   String referenceSetState1 = 'ชำรุดรอซ่อม';
   String referenceSetState2 = 'รอตัดชำรุด';
-  String referenceSetState3 = '';
+  String referenceSetState3 = 'สภาพดี';
   bool _visible = false;
   var titleName = TextEditingController();
+  var now = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
-    if (widget.imagePath == 'null') {
-      widget.imagePath =
-          'http://vpnptec.dyndns.org:10280/OPS_Fileupload/ATT_220300020.png';
-    }
     setState(() {
       titleName.text = widget.titleName;
     });
@@ -131,7 +128,7 @@ class _DetailsReportedState extends State<DetailsReported> {
                 Text(
                   widget.codeAssets,
                   style: const TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       //fontStyle: FontStyle.italic,
                       fontSize: 28,
                       color: Colors.white),
@@ -150,7 +147,7 @@ class _DetailsReportedState extends State<DetailsReported> {
                 Text(
                   widget.titleName,
                   style: const TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       //fontStyle: FontStyle.italic,
                       fontSize: 18,
                       color: Colors.white),
@@ -161,18 +158,7 @@ class _DetailsReportedState extends State<DetailsReported> {
                 Text(
                   'สาขาที่อยู่ของทรัพย์สิน :  ' + widget.brachID.toString(),
                   style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      //fontStyle: FontStyle.italic,
-                      fontSize: 18,
-                      color: Colors.white),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text(
-                  'ชื่อย่อ :',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       //fontStyle: FontStyle.italic,
                       fontSize: 18,
                       color: Colors.white),
@@ -183,7 +169,7 @@ class _DetailsReportedState extends State<DetailsReported> {
                 Text(
                   'รอบที่ทำการบันทึก :  ' + widget.round,
                   style: const TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       //fontStyle: FontStyle.italic,
                       fontSize: 18,
                       color: Colors.white),
@@ -196,46 +182,13 @@ class _DetailsReportedState extends State<DetailsReported> {
                   thickness: 1,
                   height: 20,
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  'บันทึกโดย :  ' + widget.userCode,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      //fontStyle: FontStyle.italic,
-                      fontSize: 18,
-                      color: Colors.white),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  'สาขาที่ทำการบันทึก :  ' + widget.userBranch,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      //fontStyle: FontStyle.italic,
-                      fontSize: 18,
-                      color: Colors.white),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  'วันที่บันทึก :  ' + widget.date,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      //fontStyle: FontStyle.italic,
-                      fontSize: 18,
-                      color: Colors.white),
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'อ้างอิง :  ' + widget.reference.toString(),
+                      'บันทึกโดย :  ' + widget.userCode,
                       style: const TextStyle(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                           //fontStyle: FontStyle.italic,
                           fontSize: 18,
                           color: Colors.white),
@@ -243,7 +196,12 @@ class _DetailsReportedState extends State<DetailsReported> {
                     IconButton(
                       onPressed: () {
                         setState(() {
-                          if (widget.reference == "QR Code ไม่สมบูรณ์") {
+                          if (widget.reference ==
+                                  ("QR Code ไม่สมบูรณ์ (สภาพดี)") ||
+                              widget.reference ==
+                                  ("QR Code ไม่สมบูรณ์ (ชำรุดรอซ่อม)") ||
+                              widget.reference ==
+                                  ("QR Code ไม่สมบูรณ์ (รอตัดชำรุด)")) {
                             _visible = false;
                           } else {
                             if (_visible == true) {
@@ -259,6 +217,36 @@ class _DetailsReportedState extends State<DetailsReported> {
                       iconSize: 18.0,
                     ),
                   ],
+                ),
+                Text(
+                  'สาขาที่ทำการบันทึก :  ' + widget.userBranch,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      //fontStyle: FontStyle.italic,
+                      fontSize: 18,
+                      color: Colors.white),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  'วันที่บันทึก :  ' + widget.date,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      //fontStyle: FontStyle.italic,
+                      fontSize: 18,
+                      color: Colors.white),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  'อ้างอิง :  ' + widget.reference.toString(),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      //fontStyle: FontStyle.italic,
+                      fontSize: 18,
+                      color: Colors.white),
                 ),
                 Column(
                   children: const <Widget>[
@@ -276,7 +264,15 @@ class _DetailsReportedState extends State<DetailsReported> {
                   ],
                 ),
                 Center(
-                    child: Image.network(widget.imagePath, fit: BoxFit.cover)),
+                  child: widget.imagePath == 'null'
+                      ? Image.asset(
+                          "assets/images/ATT_220300020.png",
+                          width: 250,
+                          height: 180,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.network(widget.imagePath, fit: BoxFit.cover),
+                ),
                 const SizedBox(height: 10),
                 Visibility(
                   visible: _visible,
@@ -333,11 +329,11 @@ class _DetailsReportedState extends State<DetailsReported> {
                             });
                           },
                         ),
-                        const Text('ปกติ',
+                        const Text('สภาพดี',
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600)),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500)),
                       ],
                     ),
                   ),
@@ -372,8 +368,8 @@ class _DetailsReportedState extends State<DetailsReported> {
                         const Text('ชำรุดรอซ่อม',
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600)),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500)),
                       ],
                     ),
                   ),
@@ -409,8 +405,8 @@ class _DetailsReportedState extends State<DetailsReported> {
                           'รอตัดชำรุด',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
                         ),
                       ],
                     ),
@@ -439,9 +435,9 @@ class _DetailsReportedState extends State<DetailsReported> {
         "Code": widget.codeAssets,
         "RoundID": widget.round,
         "UserID": pref.getString("UserID")!,
+        "Date": now.toString(),
       }),
     );
-    // print(response.body);
     if (response.statusCode == 200) {
       final items = jsonDecode(response.body);
       setState(() {
